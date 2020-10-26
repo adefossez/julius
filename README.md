@@ -11,6 +11,10 @@ will be extremely fast, while going from 20001 to 30001 will not.
 Julius is faster than resampy even on CPU, and when running on GPU it makes resampling a completely negligible part of your pipeline.
 Finally, Julius is differentiable and can thus be integrated in an end-to-end training pipeline.
 
+<p align="center">
+<img src="./logo.png" alt="Representation of the convolutions filters used for the efficient resampling."
+width="500px"></p>
+
 ## Installation
 
 `julius` requires python 3.6. To install:
