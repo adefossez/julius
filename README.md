@@ -9,7 +9,7 @@ are small after dividing them by their GCD. For instance going from a sample rat
 will be extremely fast, while going from 20001 to 30001 will not.
 
 Julius is faster than resampy even on CPU, and when running on GPU it makes resampling a completely negligible part of your pipeline.
-Finally, Julius is differentiable and can thus be integrated in an end-to-end pipeline.
+Finally, Julius is differentiable and can thus be integrated in an end-to-end training pipeline.
 
 ## Installation
 
