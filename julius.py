@@ -55,7 +55,7 @@ def resample_frac(x, old_sr: int, new_sr: int, zeros: int = 24, rolloff: float =
     if new_sr < old_sr:
         sr *= rolloff
     width = math.ceil(zeros * old_sr / sr)
-    idx = th.linspace(-width, width, 2 * width + 1).to(x)
+    idx = th.arange(-width, width + old_sr).to(x)
     for i in range(new_sr):
         t = (-i/new_sr + idx/old_sr) * sr
         t = t.clamp_(-zeros, zeros)
@@ -65,8 +65,9 @@ def resample_frac(x, old_sr: int, new_sr: int, zeros: int = 24, rolloff: float =
 
     scale = sr / old_sr
     kernel = th.stack(kernels).view(new_sr, 1, -1).mul_(scale)
-    ys = F.conv1d(x.unsqueeze(1), kernel, stride=old_sr, padding=width)
-    return ys.transpose(1, 2).reshape(*other, -1)
+    x = F.pad(x[:, None], (width, width + old_sr))
+    ys = F.conv1d(x, kernel, stride=old_sr)
+    return ys.transpose(1, 2).reshape(*other, -1)[..., :int(new_sr * length / old_sr)]
 
 
 # Easier implementations for downsampling and upsampling by a factor of 2
