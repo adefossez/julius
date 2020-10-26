@@ -19,7 +19,7 @@ width="500px"></p>
 
 `julius` requires python 3.6. To install:
 ```bash
-pip3 install julius
+pip3 install -U julius
 ```
 
 ## Usage
@@ -38,19 +38,20 @@ If `signal` is a CUDA Tensor, then everything will run on GPU :)
 
 ## Benchmark
 
-On my laptop, the time taken to process a tensor of size `(256, 40000)` (roughly 256 seconds of audio at 44.1 kHz) is (on CPU):
+I benchmarked julius and resampy on my laptop CPU, as well as on a V100 GPU. The input is a tensor of size `(256, 44100)`.
 
-| Old sr | New sr | Julius (sec) | Resampy (sec) |
-|--------|--------|--------|---------|
-|       2|       1|   0.4  |2.0 |
-| 1 | 2 | 0.6 | 4.8 |
-| 4 | 5 | 0.13 | 2.5|
-| 10 | 11 | 0.08 | 2.45 |
-| 20001 | 30001 | 2.4 | 1.5 |
+| Old sr | New sr | Julius CPU (sec) | Julius GPU (sec) | Resampy CPU (sec) |
+|--------|--------|--------|---------| ------ |
+|       2|       1|   0.4  | 0.004 |2.0 |
+| 1 | 2 | 0.6 | 0.009 | 4.8 |
+| 4 | 5 | 0.13 | 0.003 | 2.5|
+| 10 | 11 | 0.08 | 0.005 | 2.45 |
+| 44100 | 16000 | 0.09 | 0.04 | 2.45 |
+| 20001 | 30001 | 27 | 7.32 | 4.3 |
 
 Except when `new_sr / old_sr` does not simplify to a small irreductible fraction, `julius` is faster even on CPU than `resampy`.
-When running on GPU, `julius` makes resampling take a negligible time of the order of a few milliseconds.
-
+When running on GPU, `julius` makes resampling take a negligible time of the order of a few milliseconds, up to 40ms for the typical 44.1kHz -> 16kHz.
+The last line in the table is the illustration that in some cases, if you have to use very specific sample rates, resampy is better.
 
 ## Running tests
 
