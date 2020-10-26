@@ -1,10 +1,15 @@
 # Julius, fast PyTorch based resampling for audio and 1D signals
 
+![tests badge](https://github.com/adefossez/julius/workflows/tests/badge.svg)
+
 This is an implementation of the [sinc resample algorithm][resample] by Julius O. Smith.
 It is the same algorithm than the one used in [resampy][resampy] but to run efficiently on GPU it
 is limited to fractional changes of the sample rate. It will be fast if the old and new sample rate
 are small after dividing them by their GCD. For instance going from a sample rate of 2000 to 3000 (2, 3 after removing the GCD)
-will be extremely fast, while going from 2001 to 3000 will not.
+will be extremely fast, while going from 20001 to 30001 will not.
+
+Julius is faster than resampy even on CPU, and when running on GPU it makes resampling a completely negligible part of your pipeline.
+Finally, Julius is differentiable and can thus be integrated in an end-to-end pipeline.
 
 ## Installation
 
@@ -29,6 +34,19 @@ by this amount. This can potentially reduce aliasing if you notice such an issue
 If `signal` is a CUDA Tensor, then everything will run on GPU :)
 
 ## Benchmark
+
+On my laptop, the time taken to process a tensor of size `(256, 40000)` (roughly 256 seconds of audio at 44.1 kHz) is (on CPU):
+
+| Old sr | New sr | Julius (sec) | Resampy (sec) |
+|--------|--------|--------|---------|
+|       2|       1|   0.4  |2.0 |
+| 1 | 2 | 0.6 | 4.8 |
+| 4 | 5 | 0.13 | 2.5|
+| 10 | 11 | 0.08 | 2.45 |
+| 20001 | 30001 | 2.4 | 1.5 |
+
+Except for very large when `new_sr / old_sr` does not simplify to a small irreductible fraction, `julius` is faster even on CPU than `resampy`.
+When running on GPU, `julius` makes resampling take a negligible time of the order of a few milliseconds.
 
 
 ## Running tests
