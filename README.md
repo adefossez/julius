@@ -45,7 +45,7 @@ On my laptop, the time taken to process a tensor of size `(256, 40000)` (roughly
 | 10 | 11 | 0.08 | 2.45 |
 | 20001 | 30001 | 2.4 | 1.5 |
 
-Except for very large when `new_sr / old_sr` does not simplify to a small irreductible fraction, `julius` is faster even on CPU than `resampy`.
+Except when `new_sr / old_sr` does not simplify to a small irreductible fraction, `julius` is faster even on CPU than `resampy`.
 When running on GPU, `julius` makes resampling take a negligible time of the order of a few milliseconds.
 
 
