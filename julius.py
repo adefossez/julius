@@ -51,7 +51,9 @@ def resample_frac(x, old_sr: int, new_sr: int, zeros: int = 24, rolloff: float =
     new_sr //= gcd
 
     kernels = []
-    sr = rolloff * min(new_sr, old_sr)
+    sr = min(new_sr, old_sr)
+    if new_sr < old_sr:
+        sr *= rolloff
     width = math.ceil(zeros * old_sr / sr)
     idx = th.linspace(-width, width, 2 * width + 1).to(x)
     for i in range(new_sr):
