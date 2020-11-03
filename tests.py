@@ -79,7 +79,7 @@ class TestResample(_BaseTest):
         for freq in [8, 16, 20, 28, 32, 36, 40, 56, 64]:
             x = pure_tone(freq, sr=128)
             y_gt_down = julius.downsample2(x)
-            y_down = julius.resample_frac(x, 2, 1)
+            y_down = julius.resample_frac(x, 2, 1, rolloff=1)
             self.assertSimilar(y_down, y_gt_down, x, f"freq={freq} down")
             y_gt_up = julius.upsample2(x)
             y_up = julius.resample_frac(x, 1, 2)

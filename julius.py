@@ -29,7 +29,7 @@ def sinc(t):
     return th.where(t == 0, th.tensor(1., device=t.device, dtype=t.dtype), th.sin(t) / t)
 
 
-def resample_frac(x, old_sr: int, new_sr: int, zeros: int = 24, rolloff: float = 1):
+def resample_frac(x, old_sr: int, new_sr: int, zeros: int = 24, rolloff: float = 0.945):
     """
     Resampling from the sample rate `old_sr` to `new_sr`.
     After dividing `old_sr` and `new_sr` by their GCD, both should be small
@@ -41,8 +41,12 @@ def resample_frac(x, old_sr: int, new_sr: int, zeros: int = 24, rolloff: float =
         zeros (int): number of zero crossing to keep in the sinc filter.
         rolloff (float): when downsampling, use a lowpass filter that is `rolloff * new_sr / 2`,
             to ensure sufficient margin due to the imperfection of the FIR filter used.
-            Default is deactivated, set it to a value < 1 if you experience aliasing issues.
+            Lowering this value will reduce anti-aliasing, but will reduce some of the
+            highest frequencies.
     """
+    if not isinstance(old_sr, int) or not isinstance(new_sr, int):
+        raise ValueError("old_sr and new_sr should be integers")
+
     *other, length = x.shape
     x = x.reshape(-1, length)
 
@@ -55,12 +59,12 @@ def resample_frac(x, old_sr: int, new_sr: int, zeros: int = 24, rolloff: float =
     if new_sr < old_sr:
         # If downsampling, we can use rolloff to prevent aliasing
         sr *= rolloff
-        
+
     # The key idea of the algorithm is that x(t) can be exactly reconstructed from x[i] (tensor)
     # using the sinc interpolation formula: x(t) = sum_i x[i] sinc(pi * old_sr * (i / old_sr - t))
     # We can then sample the function x(t) with a different sample rate: y[j] = x(j / new_sr)
     # or, y[j] = sum_i x[i] sinc(pi * old_sr * (i / old_sr - j / new_sr))
-    # We see here that y[j] is the convolution of x[i] with a specific filter, 
+    # We see here that y[j] is the convolution of x[i] with a specific filter,
     # for which we take an FIR approximation, stopping when we see at least `zeros` zeros crossing.
     # But y[j+1] is going to have a different set of weights and so on, until y[j + new_sr].
     # y[j + new_sr] = sum_i x[i] sinc(pi * old_sr * ((i / old_sr - (j + new_sr) / new_sr))
@@ -71,7 +75,8 @@ def resample_frac(x, old_sr: int, new_sr: int, zeros: int = 24, rolloff: float =
     width = math.ceil(zeros * old_sr / sr)
     # If old_sr is still big after GCD reduction, most filters will be very unbalanced, i.e.,
     # they will have a lot of almost zero values to the left or to the right...
-    # There is probably a way to evaluate those filters more efficiently, but this is kept for future work.
+    # There is probably a way to evaluate those filters more efficiently, but this is kept for
+    # future work.
     idx = th.arange(-width, width + old_sr).to(x)
     for i in range(new_sr):
         t = (-i/new_sr + idx/old_sr) * sr

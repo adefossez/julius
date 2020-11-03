@@ -26,13 +26,13 @@ pip3 install -U julius
 
 ```python
 import julius
-julius.resample_frac(signal, old_sr, new_sr, zeros=24, rollof=1)
+julius.resample_frac(signal, old_sr, new_sr, zeros=24, rolloff=0.945)
 ```
 
 - `signal` is a multi dimensional PyTorch tensor, with the last dimension representing time.
 - `resample_frac` change the sample rate from `old_sr` to `new_sr`. The GCD is automatically removed for you.
 - `zeros` is the number of zero crossing to keep in the sinc filters, higher values can be more accurate but also slower. Default value is probably fine.
-- If `rolloff < 1`, the cutoff frequency of the low pass filter used before downsampling will be half the target sample_rate times this amount. This can potentially reduce aliasing if you notice such an issue. When doing upsampling, this is ignored.
+- If `rolloff < 1`, the cutoff frequency of the low pass filter used before downsampling will be half the target sample_rate times this amount. This can potentially reduce aliasing if you notice such an issue. When doing upsampling, this is ignored. Default value is 0.945.
 
 If `signal` is a CUDA Tensor, then everything will run on GPU :)
 
