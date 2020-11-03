@@ -47,6 +47,9 @@ def resample_frac(x, old_sr: int, new_sr: int, zeros: int = 24, rolloff: float =
     if not isinstance(old_sr, int) or not isinstance(new_sr, int):
         raise ValueError("old_sr and new_sr should be integers")
 
+    if old_sr == new_sr:
+        return x
+
     *other, length = x.shape
     x = x.reshape(-1, length)
 
