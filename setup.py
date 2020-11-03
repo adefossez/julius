@@ -11,7 +11,7 @@ URL = 'https://github.com/adefossez/julius'
 EMAIL = 'alexandre.defossez@gmail.com'
 AUTHOR = 'Alexandre Défossez'
 REQUIRES_PYTHON = '>=3.6.0'
-VERSION = "0.1.1"
+VERSION = "0.1.2"
 
 HERE = Path(__file__).parent
 
