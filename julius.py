@@ -43,6 +43,9 @@ def resample_frac(x, old_sr: int, new_sr: int, zeros: int = 24, rolloff: float =
             to ensure sufficient margin due to the imperfection of the FIR filter used.
             Default is deactivated, set it to a value < 1 if you experience aliasing issues.
     """
+    if old_sr == new_sr:
+        return x
+    
     *other, length = x.shape
     x = x.reshape(-1, length)
 
