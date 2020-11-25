@@ -7,8 +7,7 @@ def run_bench(name, *args, device="cpu"):
     args += ["-d", device]
     if device == "cuda" and not th.cuda.is_available():
         return "Not available /!\\"
-    proc = sp.run(["python3", "-m", f"bench.{name}"] + args, capture_output=True, check=True)
-    return proc.stdout.decode("utf8")
+    return sp.check_output(["python3", "-m", f"bench.{name}"] + args).decode('utf8')
 
 
 def main():
