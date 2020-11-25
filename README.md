@@ -8,15 +8,15 @@ Note that all the modules implemented here can be used with TorchScript.
 
 For now, I have implemented:
 
-- `julius.resample`: fast sinc resampling.
-- `julius.fftconv`: FFT based convolutions.
-- `julius.lowpass`: FIR low pass filter banks.
-- `julius.bands`: Decomposition of a waveform signal over mel-scale frequency bands.
+- [julius.resample](https://adefossez.github.io/julius/julius/resample.html): fast sinc resampling.
+- [julius.fftconv](https://adefossez.github.io/julius/julius/fftconv.html): FFT based convolutions.
+- [julius.lowpass](https://adefossez.github.io/julius/julius/lowpass.html): FIR low pass filter banks.
+- [julius.bands](https://adefossez.github.io/julius/julius/bands.html): Decomposition of a waveform signal over mel-scale frequency bands.
 
 Along that, you might found useful utilities in:
 
-- `julius.core`: DSP related functions.
-- `julius.utils`: Generic utilities.
+- [julius.core](https://adefossez.github.io/julius/julius/core.html): DSP related functions.
+- [julius.utils](https://adefossez.github.io/julius/julius/utils.html): Generic utilities.
 
 <p align="center">
 <img src="./logo.png" alt="Representation of the convolutions filters used for the efficient resampling."
@@ -120,5 +120,5 @@ python3 -m bench.gen
 
 [resample]: https://ccrma.stanford.edu/~jos/resample/resample.html
 [resampy]: https://resampy.readthedocs.io/
-[docs]:  https://adefossez.github.io/julius/docs/julius/index.html
-[bench]:  https://adefossez.github.io/julius/docs/bench/index.html
+[docs]:  https://adefossez.github.io/julius/julius/index.html
+[bench]:  https://adefossez.github.io/julius/bench/index.html
