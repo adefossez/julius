@@ -1,15 +1,23 @@
-# Julius, fast PyTorch based resampling for audio and 1D signals
+# Julius, fast PyTorch based DSP for audio and 1D signals
 
 ![tests badge](https://github.com/adefossez/julius/workflows/tests/badge.svg)
+![cov badge](https://github.com/adefossez/julius/workflows/cov%3E90%25/badge.svg)
 
-This is an implementation of the [sinc resample algorithm][resample] by Julius O. Smith.
-It is the same algorithm than the one used in [resampy][resampy] but to run efficiently on GPU it
-is limited to fractional changes of the sample rate. It will be fast if the old and new sample rate
-are small after dividing them by their GCD. For instance going from a sample rate of 2000 to 3000 (2, 3 after removing the GCD)
-will be extremely fast, while going from 20001 to 30001 will not.
+Julius contains different Digital Signal Processing algorithms implemented
+with PyTorch, so that they are differentiable and available on CUDA.
+Note that all the modules implemented here can be used with TorchScript.
 
-Julius is faster than resampy even on CPU, and when running on GPU it makes resampling a completely negligible part of your pipeline.
-Finally, Julius is differentiable and can thus be integrated in an end-to-end training pipeline.
+For now, I have implemented:
+
+- [julius.resample](https://adefossez.github.io/julius/julius/resample.html): fast sinc resampling.
+- [julius.fftconv](https://adefossez.github.io/julius/julius/fftconv.html): FFT based convolutions.
+- [julius.lowpass](https://adefossez.github.io/julius/julius/lowpass.html): FIR low pass filter banks.
+- [julius.bands](https://adefossez.github.io/julius/julius/bands.html): Decomposition of a waveform signal over mel-scale frequency bands.
+
+Along that, you might found useful utilities in:
+
+- [julius.core](https://adefossez.github.io/julius/julius/core.html): DSP related functions.
+- [julius.utils](https://adefossez.github.io/julius/julius/utils.html): Generic utilities.
 
 <p align="center">
 <img src="./logo.png" alt="Representation of the convolutions filters used for the efficient resampling."
@@ -22,44 +30,96 @@ width="500px"></p>
 pip3 install -U julius
 ```
 
+
 ## Usage
 
-```python
+See the [Julius documentation][docs] for the usage of Julius. Hereafter you will find a few examples
+to get you quickly started:
+
+```python3
 import julius
-julius.resample_frac(signal, old_sr, new_sr, zeros=24, rolloff=0.945)
+import torch
+
+# Last dimension is time, any number of dimensions are supported
+signal = torch.randn(6, 4, 1024)
+# Resample from a sample rate of 100 to 70.
+# The old and new sample rate must be integers, and resampling will be fast if they
+# form an irreductible fraction with small numerator and denominator (here 10 and 7).
+resampled_signal = julius.resample_frac(signal, 100, 70)
+
+# Low pass filter with a `0.1 * sample_rate` cutoff frequency.
+low_freqs = julius.lowpass_filter(signal, 0.1)
+
+# Fast convolutions with FFT, useful for large kernels
+conv = julius.FFTConv1d(4, 10, 512)
+# For FFTConv1d, input signal must be [B, C, T] as for normal Conv1d.
+convolved = conv(signal)
+
+# Decomposition over frequency bands in the Waveform domain
+bands = julius.split_bands(signal, n_bands=10, sample_rate=100)
+# Decomposition with n_bands frequency bands evenly spaced in mel space.
+# Input shape can be `[*, T]`, output will be `[n_bands, *, T]`.
+random_eq = (torch.rand(10, 1, 1, 1) * bands).sum(0)
 ```
 
-- `signal` is a multi dimensional PyTorch tensor, with the last dimension representing time.
-- `resample_frac` change the sample rate from `old_sr` to `new_sr`. The GCD is automatically removed for you.
-- `zeros` is the number of zero crossing to keep in the sinc filters, higher values can be more accurate but also slower. Default value is probably fine.
-- If `rolloff < 1`, the cutoff frequency of the low pass filter used before downsampling will be half the target sample_rate times this amount. This can potentially reduce aliasing if you notice such an issue. When doing upsampling, this is ignored. Default value is 0.945.
+## Algorithms
 
-If `signal` is a CUDA Tensor, then everything will run on GPU :)
+### Resample
 
-## Benchmark
+This is an implementation of the [sinc resample algorithm][resample] by Julius O. Smith.
+It is the same algorithm than the one used in [resampy][resampy] but to run efficiently on GPU it
+is limited to fractional changes of the sample rate. It will be fast if the old and new sample rate
+are small after dividing them by their GCD. For instance going from a sample rate of 2000 to 3000 (2, 3 after removing the GCD)
+will be extremely fast, while going from 20001 to 30001 will not.
+Julius resampling is faster than resampy even on CPU, and when running on GPU it makes resampling a completely negligible part of your pipeline
+(except of course for weird cases like going from a sample rate of 20001 to 30001).
 
-I benchmarked julius and resampy on my laptop CPU, as well as on a V100 GPU. The input is a tensor of size `(256, 44100)`.
 
-| Old sr | New sr | Julius CPU (sec) | Julius GPU (sec) | Resampy CPU (sec) |
-|--------|--------|--------|---------| ------ |
-|       2|       1|   0.4  | 0.004 |2.0 |
-| 1 | 2 | 0.6 | 0.009 | 4.8 |
-| 4 | 5 | 0.13 | 0.003 | 2.5|
-| 10 | 11 | 0.08 | 0.005 | 2.45 |
-| 44100 | 16000 | 0.09 | 0.04 | 2.45 |
-| 20001 | 30001 | 27 | 7.32 | 4.3 |
+### FFTConv1d
 
-Except when `new_sr / old_sr` does not simplify to a small irreductible fraction, `julius` is faster even on CPU than `resampy`.
-When running on GPU, `julius` makes resampling take a negligible time of the order of a few milliseconds, up to 40ms for the typical 44.1kHz -> 16kHz.
-The last line in the table is the illustration that in some cases, if you have to use very specific sample rates, resampy is better.
+Computing convolutions with very large kernels (>= 128) and a stride of 1 can be much faster
+using FFT. This implements the same API as `torch.nn.Conv1d` and `torch.nn.functional.conv1d`
+but with a FFT backend. Dilation and groups are not supported.
+FFTConv will be faster on CPU even for relatively small tensors (a few dozen channels, kernel size
+of 128). On CUDA, due to the higher parallelism, regular convolution can be faster in many cases,
+but for kernel sizes above 128, for a large number of channels or batch size, FFTConv1d
+will eventually be faster (basically when you no longer have idle cores that can hide
+the true complexity of the operation).
+
+### LowPass
+
+Classical Finite Impulse Reponse windowed sinc lowpass filter. It will use FFT convolutions automatically
+if the filter size is large enough.
+
+### Bands
+
+Decomposition of a signal over frequency bands in the waveform domain. This can be useful for
+instance to perform parametric EQ (see [Usage](#usage) above).
+
+## Benchmarks
+
+You can find speed tests (and comparisons to reference implementations) on the
+[benchmark][bench]. The CPU benchmarks are run on a Mac Book Pro 2020, with a 2 GHz
+quadcore intel CPU. The GPUs benchmark are run on Google Colab Pro (e.g. V100 or P100 NVidia GPU).
+We also compare the validity of our implementations, as compared to reference ones like `resampy`
+or `torch.nn.Conv1d`.
+
+
 
 ## Running tests
 
 Clone this repository, then
 ```bash
-pip3 install .[test]'
+pip3 install .[dev]'
 python3 tests.py
 ```
+
+To run the benchmarks:
+```
+pip3 install .[dev]'
+python3 -m bench.gen
+```
+
 
 ## License
 
@@ -68,3 +128,5 @@ python3 tests.py
 
 [resample]: https://ccrma.stanford.edu/~jos/resample/resample.html
 [resampy]: https://resampy.readthedocs.io/
+[docs]:  https://adefossez.github.io/julius/julius/index.html
+[bench]:  ./bench.md

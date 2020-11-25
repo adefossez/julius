@@ -6,12 +6,13 @@ from pathlib import Path
 from setuptools import setup
 
 NAME = 'julius'
-DESCRIPTION = 'Priority queue with a sane API'
+DESCRIPTION = ('Nice DSP sweets: resampling, FFT Convolutions. '
+               'All with PyTorch, differentiable and with CUDA support.')
 URL = 'https://github.com/adefossez/julius'
 EMAIL = 'alexandre.defossez@gmail.com'
 AUTHOR = 'Alexandre Défossez'
 REQUIRES_PYTHON = '>=3.6.0'
-VERSION = "0.1.2"
+VERSION = "0.2.0"
 
 HERE = Path(__file__).parent
 
@@ -31,9 +32,9 @@ setup(
     author_email=EMAIL,
     python_requires=REQUIRES_PYTHON,
     url=URL,
-    py_modules=['julius'],
-    install_requires=['torch'],
-    extras_require={"test": ['resampy']},
+    packages=['julius'],
+    install_requires=['torch>=1.6.0'],
+    extras_require={'dev': ['coverage', 'resampy', 'pdoc3']},
     include_package_data=True,
     license='MIT License',
     classifiers=[
