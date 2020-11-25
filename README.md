@@ -123,6 +123,13 @@ python3 -m bench.gen
 
 `julius` is released under the MIT license.
 
+## Thanks
+
+This package is named in the honor of
+[Julius O. Smith](https://ccrma.stanford.edu/~jos/),
+whose books and website were a gold mine of information for me to learn about DSP. Go checkout his website if you want
+to learn more about DSP.
+
 
 [resample]: https://ccrma.stanford.edu/~jos/resample/resample.html
 [resampy]: https://resampy.readthedocs.io/
