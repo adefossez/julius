@@ -26,7 +26,7 @@
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/adefossez/julius/blob/5834ad1f7174862b11764134ef544da23cf19a91/julius/bands.py#L0-L104" class="git-link">Browse git</a>
+<a href="https://github.com/adefossez/julius/blob/f2e559f503aa0ad0ce3c74f5228213b6cc1ca5d5/julius/bands.py#L0-L113" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python"># File under the MIT license, see https://github.com/adefossez/julius/LICENSE for details.
 # Author: adefossez, 2020
@@ -85,7 +85,7 @@ class SplitBands(torch.nn.Module):
 
         self.sample_rate = sample_rate
         self.n_bands = n_bands
-        self.cutoffs = cutoffs
+        self._cutoffs = cutoffs
         self.pad = pad
         self.zeros = zeros
         self.fft = fft
@@ -118,8 +118,17 @@ class SplitBands(torch.nn.Module):
         bands.append(input - low)
         return torch.stack(bands)
 
+    @property
+    def cutoffs(self):
+        if self._cutoffs is not None:
+            return self._cutoffs
+        elif self.lowpass is not None:
+            return [c * self.sample_rate for c in self.lowpass.cutoffs]
+        else:
+            return []
+
     def __repr__(self):
-        return simple_repr(self)
+        return simple_repr(self, overrides={&#34;cutoffs&#34;: self._cutoffs})
 
 
 def split_bands(signal: torch.Tensor, sample_rate: float, n_bands: Optional[int] = None,
@@ -132,7 +141,7 @@ def split_bands(signal: torch.Tensor, sample_rate: float, n_bands: Optional[int]
     &gt;&gt;&gt; list(split_bands(x, sample_rate=64, cutoffs=[12, 24]).shape)
     [3, 6, 4, 1024]
     &#34;&#34;&#34;
-    return SplitBands(sample_rate, n_bands, cutoffs, pad, zeros, fft)(signal)</code></pre>
+    return SplitBands(sample_rate, n_bands, cutoffs, pad, zeros, fft).to(signal)(signal)</code></pre>
 </details>
 </section>
 <section>
@@ -154,7 +163,7 @@ def split_bands(signal: torch.Tensor, sample_rate: float, n_bands: Optional[int]
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/adefossez/julius/blob/5834ad1f7174862b11764134ef544da23cf19a91/julius/bands.py#L95-L105" class="git-link">Browse git</a>
+<a href="https://github.com/adefossez/julius/blob/f2e559f503aa0ad0ce3c74f5228213b6cc1ca5d5/julius/bands.py#L104-L114" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def split_bands(signal: torch.Tensor, sample_rate: float, n_bands: Optional[int] = None,
                 cutoffs: Optional[Sequence[float]] = None, pad: bool = True,
@@ -166,7 +175,7 @@ def split_bands(signal: torch.Tensor, sample_rate: float, n_bands: Optional[int]
     &gt;&gt;&gt; list(split_bands(x, sample_rate=64, cutoffs=[12, 24]).shape)
     [3, 6, 4, 1024]
     &#34;&#34;&#34;
-    return SplitBands(sample_rate, n_bands, cutoffs, pad, zeros, fft)(signal)</code></pre>
+    return SplitBands(sample_rate, n_bands, cutoffs, pad, zeros, fft).to(signal)(signal)</code></pre>
 </details>
 </dd>
 </dl>
@@ -223,7 +232,7 @@ If <code>n_bands</code> was provided, <code>B = n_bands</code> otherwise <code>B
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/adefossez/julius/blob/5834ad1f7174862b11764134ef544da23cf19a91/julius/bands.py#L14-L92" class="git-link">Browse git</a>
+<a href="https://github.com/adefossez/julius/blob/f2e559f503aa0ad0ce3c74f5228213b6cc1ca5d5/julius/bands.py#L14-L101" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">class SplitBands(torch.nn.Module):
     &#34;&#34;&#34;
@@ -269,7 +278,7 @@ If <code>n_bands</code> was provided, <code>B = n_bands</code> otherwise <code>B
 
         self.sample_rate = sample_rate
         self.n_bands = n_bands
-        self.cutoffs = cutoffs
+        self._cutoffs = cutoffs
         self.pad = pad
         self.zeros = zeros
         self.fft = fft
@@ -302,8 +311,17 @@ If <code>n_bands</code> was provided, <code>B = n_bands</code> otherwise <code>B
         bands.append(input - low)
         return torch.stack(bands)
 
+    @property
+    def cutoffs(self):
+        if self._cutoffs is not None:
+            return self._cutoffs
+        elif self.lowpass is not None:
+            return [c * self.sample_rate for c in self.lowpass.cutoffs]
+        else:
+            return []
+
     def __repr__(self):
-        return simple_repr(self)</code></pre>
+        return simple_repr(self, overrides={&#34;cutoffs&#34;: self._cutoffs})</code></pre>
 </details>
 <h3>Ancestors</h3>
 <ul class="hlist">
@@ -318,6 +336,27 @@ If <code>n_bands</code> was provided, <code>B = n_bands</code> otherwise <code>B
 <dt id="julius.bands.SplitBands.training"><code class="name">var <span class="ident">training</span> : bool</code></dt>
 <dd>
 <div class="desc"></div>
+</dd>
+</dl>
+<h3>Instance variables</h3>
+<dl>
+<dt id="julius.bands.SplitBands.cutoffs"><code class="name">var <span class="ident">cutoffs</span></code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+<a href="https://github.com/adefossez/julius/blob/f2e559f503aa0ad0ce3c74f5228213b6cc1ca5d5/julius/bands.py#L91-L98" class="git-link">Browse git</a>
+</summary>
+<pre><code class="python">@property
+def cutoffs(self):
+    if self._cutoffs is not None:
+        return self._cutoffs
+    elif self.lowpass is not None:
+        return [c * self.sample_rate for c in self.lowpass.cutoffs]
+    else:
+        return []</code></pre>
+</details>
 </dd>
 </dl>
 <h3>Methods</h3>
@@ -338,7 +377,7 @@ registered hooks while the latter silently ignores them.</p>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/adefossez/julius/blob/5834ad1f7174862b11764134ef544da23cf19a91/julius/bands.py#L76-L89" class="git-link">Browse git</a>
+<a href="https://github.com/adefossez/julius/blob/f2e559f503aa0ad0ce3c74f5228213b6cc1ca5d5/julius/bands.py#L76-L89" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def forward(self, input):
     if self.lowpass is None:
@@ -382,6 +421,7 @@ registered hooks while the latter silently ignores them.</p>
 <li>
 <h4><code><a title="julius.bands.SplitBands" href="#julius.bands.SplitBands">SplitBands</a></code></h4>
 <ul class="">
+<li><code><a title="julius.bands.SplitBands.cutoffs" href="#julius.bands.SplitBands.cutoffs">cutoffs</a></code></li>
 <li><code><a title="julius.bands.SplitBands.dump_patches" href="#julius.bands.SplitBands.dump_patches">dump_patches</a></code></li>
 <li><code><a title="julius.bands.SplitBands.forward" href="#julius.bands.SplitBands.forward">forward</a></code></li>
 <li><code><a title="julius.bands.SplitBands.training" href="#julius.bands.SplitBands.training">training</a></code></li>

@@ -37,8 +37,8 @@ On GPU we have:
 
 ### FFTConv1d
 
-We compare to `pytorch.nn.functional.conv1d`, on a input of size [16, 16, 10240],
-for a convolution with 16 input channels, 32 output channels and various kernel sizes.
+We compare to `pytorch.nn.functional.conv1d`, on a input of size [32, 32, 10240],
+for a convolution with 32 input channels, 64 output channels and various kernel sizes.
 
 On CPU we have:
 

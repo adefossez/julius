@@ -10,19 +10,19 @@ from julius import fft_conv1d
 from julius.utils import Chrono, MarkdownTable
 
 
-def test(table, kernel_size, stride, block_ratio=5, device=None):
-    x = th.randn(16, 16, 1024 * 10).to(device)
-    w = th.randn(32, 16, kernel_size).to(device)
+def test(table, kernel_size, block_ratio=5, device=None):
+    x = th.randn(32, 32, 1024 * 10).to(device)
+    w = th.randn(64, 32, kernel_size).to(device)
 
     with Chrono() as chrono_ref:
-        y_ref = F.conv1d(x, w, stride=stride)
+        y_ref = F.conv1d(x, w)
 
     with Chrono() as chrono_fft:
-        y_fft = fft_conv1d(x, w, stride=stride, block_ratio=block_ratio)
+        y_fft = fft_conv1d(x, w, block_ratio=block_ratio)
 
     delta = format((y_ref - y_fft).abs().mean(), ".1e")
-    table.line([kernel_size, stride,
-                int(1000 * chrono_fft.duration), int(1000 * chrono_ref.duration), delta])
+    table.line(
+        [kernel_size,  int(1000 * chrono_fft.duration), int(1000 * chrono_ref.duration), delta])
 
 
 def main():
@@ -32,12 +32,11 @@ def main():
     args = parser.parse_args()
 
     table = MarkdownTable(
-        ["Kernel size", "Stride", "FFT (ms)", "No FFT (ms)", "  Delta"])
+        ["Kernel size", "FFT (ms)", "No FFT (ms)", "  Delta"])
     table.header()
 
     for kernel_size in [8, 32, 64, 128, 256, 1024, 2048]:
-        for stride in [1, 4]:
-            test(table, kernel_size, stride, block_ratio=args.block_ratio, device=args.device)
+        test(table, kernel_size, block_ratio=args.block_ratio, device=args.device)
 
 
 if __name__ == "__main__":

@@ -25,7 +25,7 @@
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/adefossez/julius/blob/5834ad1f7174862b11764134ef544da23cf19a91/bench/fftconv.py#L0-L43" class="git-link">Browse git</a>
+<a href="https://github.com/adefossez/julius/blob/f2e559f503aa0ad0ce3c74f5228213b6cc1ca5d5/bench/fftconv.py#L0-L42" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python"># File under the MIT license, see https://github.com/adefossez/julius/LICENSE for details.
 # Author: adefossez, 2020
@@ -39,19 +39,19 @@ from julius import fft_conv1d
 from julius.utils import Chrono, MarkdownTable
 
 
-def test(table, kernel_size, stride, block_ratio=5, device=None):
-    x = th.randn(16, 16, 1024 * 10).to(device)
-    w = th.randn(32, 16, kernel_size).to(device)
+def test(table, kernel_size, block_ratio=5, device=None):
+    x = th.randn(32, 32, 1024 * 10).to(device)
+    w = th.randn(64, 32, kernel_size).to(device)
 
     with Chrono() as chrono_ref:
-        y_ref = F.conv1d(x, w, stride=stride)
+        y_ref = F.conv1d(x, w)
 
     with Chrono() as chrono_fft:
-        y_fft = fft_conv1d(x, w, stride=stride, block_ratio=block_ratio)
+        y_fft = fft_conv1d(x, w, block_ratio=block_ratio)
 
     delta = format((y_ref - y_fft).abs().mean(), &#34;.1e&#34;)
-    table.line([kernel_size, stride,
-                int(1000 * chrono_fft.duration), int(1000 * chrono_ref.duration), delta])
+    table.line(
+        [kernel_size,  int(1000 * chrono_fft.duration), int(1000 * chrono_ref.duration), delta])
 
 
 def main():
@@ -61,12 +61,11 @@ def main():
     args = parser.parse_args()
 
     table = MarkdownTable(
-        [&#34;Kernel size&#34;, &#34;Stride&#34;, &#34;FFT (ms)&#34;, &#34;No FFT (ms)&#34;, &#34;  Delta&#34;])
+        [&#34;Kernel size&#34;, &#34;FFT (ms)&#34;, &#34;No FFT (ms)&#34;, &#34;  Delta&#34;])
     table.header()
 
     for kernel_size in [8, 32, 64, 128, 256, 1024, 2048]:
-        for stride in [1, 4]:
-            test(table, kernel_size, stride, block_ratio=args.block_ratio, device=args.device)
+        test(table, kernel_size, block_ratio=args.block_ratio, device=args.device)
 
 
 if __name__ == &#34;__main__&#34;:
@@ -88,7 +87,7 @@ if __name__ == &#34;__main__&#34;:
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/adefossez/julius/blob/5834ad1f7174862b11764134ef544da23cf19a91/bench/fftconv.py#L28-L40" class="git-link">Browse git</a>
+<a href="https://github.com/adefossez/julius/blob/f2e559f503aa0ad0ce3c74f5228213b6cc1ca5d5/bench/fftconv.py#L28-L39" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def main():
     parser = argparse.ArgumentParser(&#34;fftconv.py&#34;)
@@ -97,37 +96,36 @@ if __name__ == &#34;__main__&#34;:
     args = parser.parse_args()
 
     table = MarkdownTable(
-        [&#34;Kernel size&#34;, &#34;Stride&#34;, &#34;FFT (ms)&#34;, &#34;No FFT (ms)&#34;, &#34;  Delta&#34;])
+        [&#34;Kernel size&#34;, &#34;FFT (ms)&#34;, &#34;No FFT (ms)&#34;, &#34;  Delta&#34;])
     table.header()
 
     for kernel_size in [8, 32, 64, 128, 256, 1024, 2048]:
-        for stride in [1, 4]:
-            test(table, kernel_size, stride, block_ratio=args.block_ratio, device=args.device)</code></pre>
+        test(table, kernel_size, block_ratio=args.block_ratio, device=args.device)</code></pre>
 </details>
 </dd>
 <dt id="bench.fftconv.test"><code class="name flex">
-<span>def <span class="ident">test</span></span>(<span>table, kernel_size, stride, block_ratio=5, device=None)</span>
+<span>def <span class="ident">test</span></span>(<span>table, kernel_size, block_ratio=5, device=None)</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/adefossez/julius/blob/5834ad1f7174862b11764134ef544da23cf19a91/bench/fftconv.py#L13-L25" class="git-link">Browse git</a>
+<a href="https://github.com/adefossez/julius/blob/f2e559f503aa0ad0ce3c74f5228213b6cc1ca5d5/bench/fftconv.py#L13-L25" class="git-link">Browse git</a>
 </summary>
-<pre><code class="python">def test(table, kernel_size, stride, block_ratio=5, device=None):
-    x = th.randn(16, 16, 1024 * 10).to(device)
-    w = th.randn(32, 16, kernel_size).to(device)
+<pre><code class="python">def test(table, kernel_size, block_ratio=5, device=None):
+    x = th.randn(32, 32, 1024 * 10).to(device)
+    w = th.randn(64, 32, kernel_size).to(device)
 
     with Chrono() as chrono_ref:
-        y_ref = F.conv1d(x, w, stride=stride)
+        y_ref = F.conv1d(x, w)
 
     with Chrono() as chrono_fft:
-        y_fft = fft_conv1d(x, w, stride=stride, block_ratio=block_ratio)
+        y_fft = fft_conv1d(x, w, block_ratio=block_ratio)
 
     delta = format((y_ref - y_fft).abs().mean(), &#34;.1e&#34;)
-    table.line([kernel_size, stride,
-                int(1000 * chrono_fft.duration), int(1000 * chrono_ref.duration), delta])</code></pre>
+    table.line(
+        [kernel_size,  int(1000 * chrono_fft.duration), int(1000 * chrono_ref.duration), delta])</code></pre>
 </details>
 </dd>
 </dl>

@@ -26,7 +26,7 @@
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/adefossez/julius/blob/5834ad1f7174862b11764134ef544da23cf19a91/julius/lowpass.py#L0-L153" class="git-link">Browse git</a>
+<a href="https://github.com/adefossez/julius/blob/f2e559f503aa0ad0ce3c74f5228213b6cc1ca5d5/julius/lowpass.py#L0-L153" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python"># File under the MIT license, see https://github.com/adefossez/julius/LICENSE for details.
 # Author: adefossez, 2020
@@ -171,7 +171,7 @@ def lowpass_filters(input: torch.Tensor,  cutoffs: Sequence[float],
     &#34;&#34;&#34;
     Functional version of `LowPassFilters`, refer to this class for more information.
     &#34;&#34;&#34;
-    return LowPassFilters(cutoffs, stride, pad, zeros, fft)(input)
+    return LowPassFilters(cutoffs, stride, pad, zeros, fft).to(input)(input)
 
 
 def lowpass_filter(input: torch.Tensor,  cutoff: float,
@@ -181,7 +181,7 @@ def lowpass_filter(input: torch.Tensor,  cutoff: float,
     Same as `lowpass_filters` but with a single cutoff frequency.
     Output will not have a dimension inserted in the front.
     &#34;&#34;&#34;
-    return LowPassFilters([cutoff], stride, pad, zeros, fft)(input)[0]</code></pre>
+    return lowpass_filters(input, [cutoff], stride, pad, zeros, fft)[0]</code></pre>
 </details>
 </section>
 <section>
@@ -200,7 +200,7 @@ Output will not have a dimension inserted in the front.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/adefossez/julius/blob/5834ad1f7174862b11764134ef544da23cf19a91/julius/lowpass.py#L147-L154" class="git-link">Browse git</a>
+<a href="https://github.com/adefossez/julius/blob/f2e559f503aa0ad0ce3c74f5228213b6cc1ca5d5/julius/lowpass.py#L147-L154" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def lowpass_filter(input: torch.Tensor,  cutoff: float,
                    stride: int = 1, pad: bool = True,
@@ -209,7 +209,7 @@ Output will not have a dimension inserted in the front.</p></div>
     Same as `lowpass_filters` but with a single cutoff frequency.
     Output will not have a dimension inserted in the front.
     &#34;&#34;&#34;
-    return LowPassFilters([cutoff], stride, pad, zeros, fft)(input)[0]</code></pre>
+    return lowpass_filters(input, [cutoff], stride, pad, zeros, fft)[0]</code></pre>
 </details>
 </dd>
 <dt id="julius.lowpass.lowpass_filters"><code class="name flex">
@@ -220,7 +220,7 @@ Output will not have a dimension inserted in the front.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/adefossez/julius/blob/5834ad1f7174862b11764134ef544da23cf19a91/julius/lowpass.py#L138-L144" class="git-link">Browse git</a>
+<a href="https://github.com/adefossez/julius/blob/f2e559f503aa0ad0ce3c74f5228213b6cc1ca5d5/julius/lowpass.py#L138-L144" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def lowpass_filters(input: torch.Tensor,  cutoffs: Sequence[float],
                     stride: int = 1, pad: bool = True,
@@ -228,7 +228,7 @@ Output will not have a dimension inserted in the front.</p></div>
     &#34;&#34;&#34;
     Functional version of `LowPassFilters`, refer to this class for more information.
     &#34;&#34;&#34;
-    return LowPassFilters(cutoffs, stride, pad, zeros, fft)(input)</code></pre>
+    return LowPassFilters(cutoffs, stride, pad, zeros, fft).to(input)(input)</code></pre>
 </details>
 </dd>
 </dl>
@@ -256,7 +256,7 @@ Output will not have a dimension inserted in the front.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/adefossez/julius/blob/5834ad1f7174862b11764134ef544da23cf19a91/julius/lowpass.py#L106-L135" class="git-link">Browse git</a>
+<a href="https://github.com/adefossez/julius/blob/f2e559f503aa0ad0ce3c74f5228213b6cc1ca5d5/julius/lowpass.py#L106-L135" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">class LowPassFilter(torch.nn.Module):
     &#34;&#34;&#34;
@@ -322,7 +322,7 @@ registered hooks while the latter silently ignores them.</p>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/adefossez/julius/blob/5834ad1f7174862b11764134ef544da23cf19a91/julius/lowpass.py#L131-L132" class="git-link">Browse git</a>
+<a href="https://github.com/adefossez/julius/blob/f2e559f503aa0ad0ce3c74f5228213b6cc1ca5d5/julius/lowpass.py#L131-L132" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def forward(self, input):
     return self._lowpasses(input)[0]</code></pre>
@@ -390,7 +390,7 @@ be more efficient to split them over multiple modules with similar frequencies.<
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/adefossez/julius/blob/5834ad1f7174862b11764134ef544da23cf19a91/julius/lowpass.py#L18-L103" class="git-link">Browse git</a>
+<a href="https://github.com/adefossez/julius/blob/f2e559f503aa0ad0ce3c74f5228213b6cc1ca5d5/julius/lowpass.py#L18-L103" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">class LowPassFilters(torch.nn.Module):
     &#34;&#34;&#34;
@@ -512,7 +512,7 @@ registered hooks while the latter silently ignores them.</p>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/adefossez/julius/blob/5834ad1f7174862b11764134ef544da23cf19a91/julius/lowpass.py#L88-L100" class="git-link">Browse git</a>
+<a href="https://github.com/adefossez/julius/blob/f2e559f503aa0ad0ce3c74f5228213b6cc1ca5d5/julius/lowpass.py#L88-L100" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def forward(self, input):
     shape = list(input.shape)

@@ -25,7 +25,7 @@
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/adefossez/julius/blob/5834ad1f7174862b11764134ef544da23cf19a91/bench/gen.py#L0-L70" class="git-link">Browse git</a>
+<a href="https://github.com/adefossez/julius/blob/f2e559f503aa0ad0ce3c74f5228213b6cc1ca5d5/bench/gen.py#L0-L69" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">import subprocess as sp
 import torch as th
@@ -36,8 +36,7 @@ def run_bench(name, *args, device=&#34;cpu&#34;):
     args += [&#34;-d&#34;, device]
     if device == &#34;cuda&#34; and not th.cuda.is_available():
         return &#34;Not available /!\\&#34;
-    proc = sp.run([&#34;python3&#34;, &#34;-m&#34;, f&#34;bench.{name}&#34;] + args, capture_output=True, check=True)
-    return proc.stdout.decode(&#34;utf8&#34;)
+    return sp.check_output([&#34;python3&#34;, &#34;-m&#34;, f&#34;bench.{name}&#34;] + args).decode(&#39;utf8&#39;)
 
 
 def main():
@@ -67,8 +66,8 @@ On GPU we have:
 
 ### FFTConv1d
 
-We compare to `pytorch.nn.functional.conv1d`, on a input of size [16, 16, 10240],
-for a convolution with 16 input channels, 32 output channels and various kernel sizes.
+We compare to `pytorch.nn.functional.conv1d`, on a input of size [32, 32, 10240],
+for a convolution with 32 input channels, 64 output channels and various kernel sizes.
 
 On CPU we have:
 
@@ -115,7 +114,7 @@ if __name__ == &#34;__main__&#34;:
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/adefossez/julius/blob/5834ad1f7174862b11764134ef544da23cf19a91/bench/gen.py#L14-L67" class="git-link">Browse git</a>
+<a href="https://github.com/adefossez/julius/blob/f2e559f503aa0ad0ce3c74f5228213b6cc1ca5d5/bench/gen.py#L13-L66" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def main():
     template = f&#34;&#34;&#34;\
@@ -144,8 +143,8 @@ On GPU we have:
 
 ### FFTConv1d
 
-We compare to `pytorch.nn.functional.conv1d`, on a input of size [16, 16, 10240],
-for a convolution with 16 input channels, 32 output channels and various kernel sizes.
+We compare to `pytorch.nn.functional.conv1d`, on a input of size [32, 32, 10240],
+for a convolution with 32 input channels, 64 output channels and various kernel sizes.
 
 On CPU we have:
 
@@ -181,15 +180,14 @@ On GPU we have:
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/adefossez/julius/blob/5834ad1f7174862b11764134ef544da23cf19a91/bench/gen.py#L5-L11" class="git-link">Browse git</a>
+<a href="https://github.com/adefossez/julius/blob/f2e559f503aa0ad0ce3c74f5228213b6cc1ca5d5/bench/gen.py#L5-L10" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def run_bench(name, *args, device=&#34;cpu&#34;):
     args = list(args)
     args += [&#34;-d&#34;, device]
     if device == &#34;cuda&#34; and not th.cuda.is_available():
         return &#34;Not available /!\\&#34;
-    proc = sp.run([&#34;python3&#34;, &#34;-m&#34;, f&#34;bench.{name}&#34;] + args, capture_output=True, check=True)
-    return proc.stdout.decode(&#34;utf8&#34;)</code></pre>
+    return sp.check_output([&#34;python3&#34;, &#34;-m&#34;, f&#34;bench.{name}&#34;] + args).decode(&#39;utf8&#39;)</code></pre>
 </details>
 </dd>
 </dl>

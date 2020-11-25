@@ -55,7 +55,7 @@ class SplitBands(torch.nn.Module):
 
         self.sample_rate = sample_rate
         self.n_bands = n_bands
-        self.cutoffs = cutoffs
+        self._cutoffs = cutoffs
         self.pad = pad
         self.zeros = zeros
         self.fft = fft
@@ -88,8 +88,17 @@ class SplitBands(torch.nn.Module):
         bands.append(input - low)
         return torch.stack(bands)
 
+    @property
+    def cutoffs(self):
+        if self._cutoffs is not None:
+            return self._cutoffs
+        elif self.lowpass is not None:
+            return [c * self.sample_rate for c in self.lowpass.cutoffs]
+        else:
+            return []
+
     def __repr__(self):
-        return simple_repr(self)
+        return simple_repr(self, overrides={"cutoffs": self._cutoffs})
 
 
 def split_bands(signal: torch.Tensor, sample_rate: float, n_bands: Optional[int] = None,
