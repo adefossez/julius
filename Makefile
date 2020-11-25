@@ -1,4 +1,4 @@
-all: tests docs dist
+all: tests dist
 
 tests:
 	coverage run -m unittest discover -s tests || exit 1
@@ -9,7 +9,7 @@ docs:
 	pdoc3 --template-dir pdoc --html -o docs -f julius
 	cp logo.png docs/
 
-dist: docs
+dist:
 	python3 setup.py sdist
 
 clean:

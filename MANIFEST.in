@@ -1,4 +1,3 @@
-include tests.py
-include doc/*/*.html
+include docs/*/*.html
 include tests/*.py
 include bench/*.py
