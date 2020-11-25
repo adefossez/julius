@@ -71,7 +71,8 @@ It is the same algorithm than the one used in [resampy][resampy] but to run effi
 is limited to fractional changes of the sample rate. It will be fast if the old and new sample rate
 are small after dividing them by their GCD. For instance going from a sample rate of 2000 to 3000 (2, 3 after removing the GCD)
 will be extremely fast, while going from 20001 to 30001 will not.
-Julius resampling is faster than resampy even on CPU, and when running on GPU it makes resampling a completely negligible part of your pipeline.
+Julius resampling is faster than resampy even on CPU, and when running on GPU it makes resampling a completely negligible part of your pipeline
+(except of course for weird cases like going from a sample rate of 20001 to 30001).
 
 
 ### FFTConv1d
@@ -79,6 +80,11 @@ Julius resampling is faster than resampy even on CPU, and when running on GPU it
 Computing convolutions with very large kernels (>= 128) and a stride of 1 can be much faster
 using FFT. This implements the same API as `torch.nn.Conv1d` and `torch.nn.functional.conv1d`
 but with a FFT backend. Dilation and groups are not supported.
+FFTConv will be faster on CPU even for relatively small tensors (a few dozen channels, kernel size
+of 128). On CUDA, due to the higher parallelism, regular convolution can be faster in many cases,
+but for kernel sizes above 128, for a large number of channels or batch size, FFTConv1d
+will eventually be faster (basically when you no longer have idle cores that can hide
+the true complexity of the operation).
 
 ### LowPass
 
@@ -93,7 +99,7 @@ instance to perform parametric EQ (see [Usage](#usage) above).
 ## Benchmarks
 
 You can find speed tests (and comparisons to reference implementations) on the
-[benchmark documentation][bench]. The CPU benchmarks are run on a Mac Book Pro 2020, with a 2 GHz
+[benchmark][bench]. The CPU benchmarks are run on a Mac Book Pro 2020, with a 2 GHz
 quadcore intel CPU. The GPUs benchmark are run on Google Colab Pro (e.g. V100 or P100 NVidia GPU).
 We also compare the validity of our implementations, as compared to reference ones like `resampy`
 or `torch.nn.Conv1d`.
@@ -123,4 +129,4 @@ python3 -m bench.gen
 [resample]: https://ccrma.stanford.edu/~jos/resample/resample.html
 [resampy]: https://resampy.readthedocs.io/
 [docs]:  https://adefossez.github.io/julius/julius/index.html
-[bench]:  https://adefossez.github.io/julius/bench/index.html
+[bench]:  ./bench.md

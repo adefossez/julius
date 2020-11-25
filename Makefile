@@ -6,7 +6,7 @@ tests:
 	coverage html --include 'julius/*'
 
 docs:
-	pdoc3 --template-dir pdoc --html -o docs -f julius bench
+	pdoc3 --template-dir pdoc --html -o docs -f julius
 	cp logo.png docs/
 
 dist: docs
