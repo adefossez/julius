@@ -40,11 +40,10 @@ to get you quickly started:
 import julius
 import torch
 
-# Last dimension is time, any number of dimensions are supported
 signal = torch.randn(6, 4, 1024)
-# Resample from a sample rate of 100 to 70.
-# The old and new sample rate must be integers, and resampling will be fast if they
-# form an irreductible fraction with small numerator and denominator (here 10 and 7).
+# Resample from a sample rate of 100 to 70. The old and new sample rate must be integers, 
+# and resampling will be fast if they form an irreductible fraction with small numerator 
+# and denominator (here 10 and 7). Any shape is supported, last dim is time.
 resampled_signal = julius.resample_frac(signal, 100, 70)
 
 # Low pass filter with a `0.1 * sample_rate` cutoff frequency.
@@ -52,7 +51,6 @@ low_freqs = julius.lowpass_filter(signal, 0.1)
 
 # Fast convolutions with FFT, useful for large kernels
 conv = julius.FFTConv1d(4, 10, 512)
-# For FFTConv1d, input signal must be [B, C, T] as for normal Conv1d.
 convolved = conv(signal)
 
 # Decomposition over frequency bands in the Waveform domain
