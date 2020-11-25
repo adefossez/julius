@@ -1,4 +1,4 @@
-name: tests
+name: cov>=90%
 on:
   push:
     branches: [ main, dev ]
@@ -19,11 +19,6 @@ jobs:
         python -m pip install --upgrade pip
         pip install '.[dev]'
 
-    - name: Run tests
+    - name: Test coverage
       run: |
-        make tests
-
-    - name: Run tests, torch 1.6
-      run: |
-        pip install torch==1.6
-        make tests
+         test "$(make tests | sed -nEe 's/TOTAL.*[[:space:]]([[:digit:]]+)%/\1/p')" -ge 90

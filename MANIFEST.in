@@ -1,1 +1,4 @@
 include tests.py
+include doc/*/*.html
+include tests/*.py
+include bench/*.py
