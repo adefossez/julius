@@ -26,7 +26,7 @@
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/adefossez/julius/blob/37c26ff018b2adb06627d7e5425c3097d596ded7/julius/bands.py#L0-L113" class="git-link">Browse git</a>
+<a href="https://github.com/adefossez/julius/blob/7a27aa56934d584182e54a074832863b1f136841/julius/bands.py#L0-L114" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python"># File under the MIT license, see https://github.com/adefossez/julius/LICENSE for details.
 # Author: adefossez, 2020
@@ -50,7 +50,8 @@ class SplitBands(torch.nn.Module):
 
     Args:
         sample_rate (float): Sample rate of the input signal in Hz.
-        n_bands (int or None): list of frequency cutoffs in Hz.
+        n_bands (int or None): number of bands, when not giving them explictely with `cutoffs`.
+            In that case, the cutoff frequencies will be evenly spaced in mel-space.
         cutoffs (list[float] or None): list of frequency cutoffs in Hz.
         pad (bool): if True, appropriately pad the input with zero over the edge. If `stride=1`,
             the output will have the same length as the input.
@@ -163,7 +164,7 @@ def split_bands(signal: torch.Tensor, sample_rate: float, n_bands: Optional[int]
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/adefossez/julius/blob/37c26ff018b2adb06627d7e5425c3097d596ded7/julius/bands.py#L104-L114" class="git-link">Browse git</a>
+<a href="https://github.com/adefossez/julius/blob/7a27aa56934d584182e54a074832863b1f136841/julius/bands.py#L105-L115" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def split_bands(signal: torch.Tensor, sample_rate: float, n_bands: Optional[int] = None,
                 cutoffs: Optional[Sequence[float]] = None, pad: bool = True,
@@ -197,7 +198,8 @@ in which case the frequency cutoffs will be spread out evenly in mel scale.</p>
 <dt><strong><code>sample_rate</code></strong> :&ensp;<code>float</code></dt>
 <dd>Sample rate of the input signal in Hz.</dd>
 <dt><strong><code>n_bands</code></strong> :&ensp;<code>int</code> or <code>None</code></dt>
-<dd>list of frequency cutoffs in Hz.</dd>
+<dd>number of bands, when not giving them explictely with <code>cutoffs</code>.
+In that case, the cutoff frequencies will be evenly spaced in mel-space.</dd>
 <dt><strong><code>cutoffs</code></strong> :&ensp;<code>list[float]</code> or <code>None</code></dt>
 <dd>list of frequency cutoffs in Hz.</dd>
 <dt><strong><code>pad</code></strong> :&ensp;<code>bool</code></dt>
@@ -232,7 +234,7 @@ If <code>n_bands</code> was provided, <code>B = n_bands</code> otherwise <code>B
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/adefossez/julius/blob/37c26ff018b2adb06627d7e5425c3097d596ded7/julius/bands.py#L14-L101" class="git-link">Browse git</a>
+<a href="https://github.com/adefossez/julius/blob/7a27aa56934d584182e54a074832863b1f136841/julius/bands.py#L14-L102" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">class SplitBands(torch.nn.Module):
     &#34;&#34;&#34;
@@ -243,7 +245,8 @@ If <code>n_bands</code> was provided, <code>B = n_bands</code> otherwise <code>B
 
     Args:
         sample_rate (float): Sample rate of the input signal in Hz.
-        n_bands (int or None): list of frequency cutoffs in Hz.
+        n_bands (int or None): number of bands, when not giving them explictely with `cutoffs`.
+            In that case, the cutoff frequencies will be evenly spaced in mel-space.
         cutoffs (list[float] or None): list of frequency cutoffs in Hz.
         pad (bool): if True, appropriately pad the input with zero over the edge. If `stride=1`,
             the output will have the same length as the input.
@@ -346,7 +349,7 @@ If <code>n_bands</code> was provided, <code>B = n_bands</code> otherwise <code>B
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/adefossez/julius/blob/37c26ff018b2adb06627d7e5425c3097d596ded7/julius/bands.py#L91-L98" class="git-link">Browse git</a>
+<a href="https://github.com/adefossez/julius/blob/7a27aa56934d584182e54a074832863b1f136841/julius/bands.py#L92-L99" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">@property
 def cutoffs(self):
@@ -377,7 +380,7 @@ registered hooks while the latter silently ignores them.</p>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/adefossez/julius/blob/37c26ff018b2adb06627d7e5425c3097d596ded7/julius/bands.py#L76-L89" class="git-link">Browse git</a>
+<a href="https://github.com/adefossez/julius/blob/7a27aa56934d584182e54a074832863b1f136841/julius/bands.py#L77-L90" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def forward(self, input):
     if self.lowpass is None:

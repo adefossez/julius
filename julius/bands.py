@@ -20,7 +20,8 @@ class SplitBands(torch.nn.Module):
 
     Args:
         sample_rate (float): Sample rate of the input signal in Hz.
-        n_bands (int or None): list of frequency cutoffs in Hz.
+        n_bands (int or None): number of bands, when not giving them explictely with `cutoffs`.
+            In that case, the cutoff frequencies will be evenly spaced in mel-space.
         cutoffs (list[float] or None): list of frequency cutoffs in Hz.
         pad (bool): if True, appropriately pad the input with zero over the edge. If `stride=1`,
             the output will have the same length as the input.
