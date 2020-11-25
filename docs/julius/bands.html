@@ -26,7 +26,7 @@
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/adefossez/julius/blob/782b5ac53d4c1912a3716ebf7114e080bec37735/julius/bands.py#L0-L104" class="git-link">Browse git</a>
+<a href="https://github.com/adefossez/julius/blob/5834ad1f7174862b11764134ef544da23cf19a91/julius/bands.py#L0-L104" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python"># File under the MIT license, see https://github.com/adefossez/julius/LICENSE for details.
 # Author: adefossez, 2020
@@ -154,7 +154,7 @@ def split_bands(signal: torch.Tensor, sample_rate: float, n_bands: Optional[int]
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/adefossez/julius/blob/782b5ac53d4c1912a3716ebf7114e080bec37735/julius/bands.py#L95-L105" class="git-link">Browse git</a>
+<a href="https://github.com/adefossez/julius/blob/5834ad1f7174862b11764134ef544da23cf19a91/julius/bands.py#L95-L105" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def split_bands(signal: torch.Tensor, sample_rate: float, n_bands: Optional[int] = None,
                 cutoffs: Optional[Sequence[float]] = None, pad: bool = True,
@@ -223,7 +223,7 @@ If <code>n_bands</code> was provided, <code>B = n_bands</code> otherwise <code>B
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/adefossez/julius/blob/782b5ac53d4c1912a3716ebf7114e080bec37735/julius/bands.py#L14-L92" class="git-link">Browse git</a>
+<a href="https://github.com/adefossez/julius/blob/5834ad1f7174862b11764134ef544da23cf19a91/julius/bands.py#L14-L92" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">class SplitBands(torch.nn.Module):
     &#34;&#34;&#34;
@@ -338,7 +338,7 @@ registered hooks while the latter silently ignores them.</p>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/adefossez/julius/blob/782b5ac53d4c1912a3716ebf7114e080bec37735/julius/bands.py#L76-L89" class="git-link">Browse git</a>
+<a href="https://github.com/adefossez/julius/blob/5834ad1f7174862b11764134ef544da23cf19a91/julius/bands.py#L76-L89" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def forward(self, input):
     if self.lowpass is None:

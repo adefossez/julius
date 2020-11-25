@@ -58,8 +58,8 @@ def mel_frequencies(n_mels: int, fmin: float, fmax: float):
 
 
     """
-    low = hz_to_mel(torch.tensor(fmin)).item()
-    high = hz_to_mel(torch.tensor(fmax)).item()
+    low = hz_to_mel(torch.tensor(float(fmin))).item()
+    high = hz_to_mel(torch.tensor(float(fmax))).item()
     mels = torch.linspace(low, high, n_mels)
     return mel_to_hz(mels)
 

@@ -76,6 +76,9 @@ class MarkdownTable:
 class Chrono:
     """
     Measures ellapsed time, calling `torch.cuda.synchronize` if necessary.
+    `Chrono` instances can be used as context managers (e.g. with `with`).
+    Upon exit of the block, you can access the duration of the block in seconds
+    with the `duration` attribute.
 
     >>> with Chrono() as chrono:
     ...     _ = sum(range(10_000))

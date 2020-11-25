@@ -26,7 +26,7 @@
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/adefossez/julius/blob/782b5ac53d4c1912a3716ebf7114e080bec37735/julius/utils.py#L0-L96" class="git-link">Browse git</a>
+<a href="https://github.com/adefossez/julius/blob/5834ad1f7174862b11764134ef544da23cf19a91/julius/utils.py#L0-L99" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python"># File under the MIT license, see https://github.com/adefossez/julius/LICENSE for details.
 # Author: adefossez, 2020
@@ -106,6 +106,9 @@ class MarkdownTable:
 class Chrono:
     &#34;&#34;&#34;
     Measures ellapsed time, calling `torch.cuda.synchronize` if necessary.
+    `Chrono` instances can be used as context managers (e.g. with `with`).
+    Upon exit of the block, you can access the duration of the block in seconds
+    with the `duration` attribute.
 
     &gt;&gt;&gt; with Chrono() as chrono:
     ...     _ = sum(range(10_000))
@@ -143,7 +146,7 @@ If <code>attrs</code> is not None, it should be a list of attributes to include.
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/adefossez/julius/blob/782b5ac53d4c1912a3716ebf7114e080bec37735/julius/utils.py#L13-L39" class="git-link">Browse git</a>
+<a href="https://github.com/adefossez/julius/blob/5834ad1f7174862b11764134ef544da23cf19a91/julius/utils.py#L13-L39" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def simple_repr(obj, attrs: Optional[List[str]] = None, overrides={}):
     &#34;&#34;&#34;
@@ -183,7 +186,10 @@ If <code>attrs</code> is not None, it should be a list of attributes to include.
 <span>class <span class="ident">Chrono</span></span>
 </code></dt>
 <dd>
-<div class="desc"><p>Measures ellapsed time, calling <code>torch.cuda.synchronize</code> if necessary.</p>
+<div class="desc"><p>Measures ellapsed time, calling <code>torch.cuda.synchronize</code> if necessary.
+<code><a title="julius.utils.Chrono" href="#julius.utils.Chrono">Chrono</a></code> instances can be used as context managers (e.g. with <code>with</code>).
+Upon exit of the block, you can access the duration of the block in seconds
+with the <code>duration</code> attribute.</p>
 <pre><code class="language-python-repl">&gt;&gt;&gt; with Chrono() as chrono:
 ...     _ = sum(range(10_000))
 ...
@@ -193,11 +199,14 @@ True
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/adefossez/julius/blob/782b5ac53d4c1912a3716ebf7114e080bec37735/julius/utils.py#L76-L97" class="git-link">Browse git</a>
+<a href="https://github.com/adefossez/julius/blob/5834ad1f7174862b11764134ef544da23cf19a91/julius/utils.py#L76-L100" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">class Chrono:
     &#34;&#34;&#34;
     Measures ellapsed time, calling `torch.cuda.synchronize` if necessary.
+    `Chrono` instances can be used as context managers (e.g. with `with`).
+    Upon exit of the block, you can access the duration of the block in seconds
+    with the `duration` attribute.
 
     &gt;&gt;&gt; with Chrono() as chrono:
     ...     _ = sum(range(10_000))
@@ -239,7 +248,7 @@ for the lines content. This will right align everything.</p>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/adefossez/julius/blob/782b5ac53d4c1912a3716ebf7114e080bec37735/julius/utils.py#L42-L73" class="git-link">Browse git</a>
+<a href="https://github.com/adefossez/julius/blob/5834ad1f7174862b11764134ef544da23cf19a91/julius/utils.py#L42-L73" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">class MarkdownTable:
     &#34;&#34;&#34;
@@ -284,7 +293,7 @@ for the lines content. This will right align everything.</p>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/adefossez/julius/blob/782b5ac53d4c1912a3716ebf7114e080bec37735/julius/utils.py#L64-L66" class="git-link">Browse git</a>
+<a href="https://github.com/adefossez/julius/blob/5834ad1f7174862b11764134ef544da23cf19a91/julius/utils.py#L64-L66" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def header(self):
     self._writeln(f&#34; {col} &#34; for col in self.columns)
@@ -299,7 +308,7 @@ for the lines content. This will right align everything.</p>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/adefossez/julius/blob/782b5ac53d4c1912a3716ebf7114e080bec37735/julius/utils.py#L68-L73" class="git-link">Browse git</a>
+<a href="https://github.com/adefossez/julius/blob/5834ad1f7174862b11764134ef544da23cf19a91/julius/utils.py#L68-L73" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def line(self, line):
     out = []
