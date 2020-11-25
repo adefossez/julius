@@ -102,4 +102,4 @@ def split_bands(signal: torch.Tensor, sample_rate: float, n_bands: Optional[int]
     >>> list(split_bands(x, sample_rate=64, cutoffs=[12, 24]).shape)
     [3, 6, 4, 1024]
     """
-    return SplitBands(sample_rate, n_bands, cutoffs, pad, zeros, fft)(signal)
+    return SplitBands(sample_rate, n_bands, cutoffs, pad, zeros, fft).to(signal)(signal)

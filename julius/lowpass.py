@@ -141,7 +141,7 @@ def lowpass_filters(input: torch.Tensor,  cutoffs: Sequence[float],
     """
     Functional version of `LowPassFilters`, refer to this class for more information.
     """
-    return LowPassFilters(cutoffs, stride, pad, zeros, fft)(input)
+    return LowPassFilters(cutoffs, stride, pad, zeros, fft).to(input)(input)
 
 
 def lowpass_filter(input: torch.Tensor,  cutoff: float,
@@ -151,4 +151,4 @@ def lowpass_filter(input: torch.Tensor,  cutoff: float,
     Same as `lowpass_filters` but with a single cutoff frequency.
     Output will not have a dimension inserted in the front.
     """
-    return LowPassFilters([cutoff], stride, pad, zeros, fft)(input)[0]
+    return lowpass_filters(input, [cutoff], stride, pad, zeros, fft)[0]
