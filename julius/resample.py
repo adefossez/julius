@@ -128,6 +128,11 @@ def resample_frac(x: torch.Tensor, old_sr: int, new_sr: int,
                   zeros: int = 24, rolloff: float = 0.945):
     """
     Functional version of `ResampleFrac`, refer to its documentation for more information.
+
+    ..warning::
+        If you call repeatidly this functions with the same sample rates, then the
+        resampling kernel will be recomputed everytime. For best performance, you should use
+        and cache an instance of `ResampleFrac`.
     """
     return ResampleFrac(old_sr, new_sr, zeros, rolloff).to(x)(x)
 
