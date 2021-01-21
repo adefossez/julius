@@ -17,7 +17,7 @@ def sinc(x: torch.Tensor):
     return torch.where(x == 0, torch.tensor(1., device=x.device, dtype=x.dtype), torch.sin(x) / x)
 
 
-def pad_to(tensor: torch.Tensor, target_length: int, mode: str='constant', value: float=0):
+def pad_to(tensor: torch.Tensor, target_length: int, mode: str = 'constant', value: float = 0):
     """
     Pad the given tensor to the given length, with 0s on the right.
     """

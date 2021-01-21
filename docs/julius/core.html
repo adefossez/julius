@@ -26,7 +26,7 @@
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/adefossez/julius/blob/051ec0eedc58d890fe3b2e1b6530402ac1623964/julius/core.py#L0-L83" class="git-link">Browse git</a>
+<a href="https://github.com/adefossez/julius/blob/0175e84cf6e03fb14349608b94040dc7a2d7fb00/julius/core.py#L0-L83" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python"># File under the MIT license, see https://github.com/adefossez/julius/LICENSE for details.
 # Author: adefossez, 2020
@@ -47,7 +47,7 @@ def sinc(x: torch.Tensor):
     return torch.where(x == 0, torch.tensor(1., device=x.device, dtype=x.dtype), torch.sin(x) / x)
 
 
-def pad_to(tensor: torch.Tensor, target_length: int, mode: str=&#39;constant&#39;, value: float=0):
+def pad_to(tensor: torch.Tensor, target_length: int, mode: str = &#39;constant&#39;, value: float = 0):
     &#34;&#34;&#34;
     Pad the given tensor to the given length, with 0s on the right.
     &#34;&#34;&#34;
@@ -135,7 +135,7 @@ Uses the simple formula by O'Shaughnessy (1987).</p>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/adefossez/julius/blob/051ec0eedc58d890fe3b2e1b6530402ac1623964/julius/core.py#L27-L36" class="git-link">Browse git</a>
+<a href="https://github.com/adefossez/julius/blob/0175e84cf6e03fb14349608b94040dc7a2d7fb00/julius/core.py#L27-L36" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def hz_to_mel(freqs: torch.Tensor):
     &#34;&#34;&#34;
@@ -166,7 +166,7 @@ Uses the simple formula by O'Shaughnessy (1987).</p>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/adefossez/julius/blob/051ec0eedc58d890fe3b2e1b6530402ac1623964/julius/core.py#L50-L64" class="git-link">Browse git</a>
+<a href="https://github.com/adefossez/julius/blob/0175e84cf6e03fb14349608b94040dc7a2d7fb00/julius/core.py#L50-L64" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def mel_frequencies(n_mels: int, fmin: float, fmax: float):
     &#34;&#34;&#34;
@@ -199,7 +199,7 @@ Uses the simple formula by O'Shaughnessy (1987).</p>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/adefossez/julius/blob/051ec0eedc58d890fe3b2e1b6530402ac1623964/julius/core.py#L39-L47" class="git-link">Browse git</a>
+<a href="https://github.com/adefossez/julius/blob/0175e84cf6e03fb14349608b94040dc7a2d7fb00/julius/core.py#L39-L47" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def mel_to_hz(mels: torch.Tensor):
     &#34;&#34;&#34;
@@ -220,9 +220,9 @@ Uses the simple formula by O'Shaughnessy (1987).</p>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/adefossez/julius/blob/051ec0eedc58d890fe3b2e1b6530402ac1623964/julius/core.py#L20-L24" class="git-link">Browse git</a>
+<a href="https://github.com/adefossez/julius/blob/0175e84cf6e03fb14349608b94040dc7a2d7fb00/julius/core.py#L20-L24" class="git-link">Browse git</a>
 </summary>
-<pre><code class="python">def pad_to(tensor: torch.Tensor, target_length: int, mode: str=&#39;constant&#39;, value: float=0):
+<pre><code class="python">def pad_to(tensor: torch.Tensor, target_length: int, mode: str = &#39;constant&#39;, value: float = 0):
     &#34;&#34;&#34;
     Pad the given tensor to the given length, with 0s on the right.
     &#34;&#34;&#34;
@@ -246,7 +246,7 @@ Uses the simple formula by O'Shaughnessy (1987).</p>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/adefossez/julius/blob/051ec0eedc58d890fe3b2e1b6530402ac1623964/julius/core.py#L74-L84" class="git-link">Browse git</a>
+<a href="https://github.com/adefossez/julius/blob/0175e84cf6e03fb14349608b94040dc7a2d7fb00/julius/core.py#L74-L84" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def pure_tone(freq: float, sr: float = 128, dur: float = 4, device=None):
     &#34;&#34;&#34;
@@ -270,7 +270,7 @@ Uses the simple formula by O'Shaughnessy (1987).</p>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/adefossez/julius/blob/051ec0eedc58d890fe3b2e1b6530402ac1623964/julius/core.py#L11-L17" class="git-link">Browse git</a>
+<a href="https://github.com/adefossez/julius/blob/0175e84cf6e03fb14349608b94040dc7a2d7fb00/julius/core.py#L11-L17" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def sinc(x: torch.Tensor):
     &#34;&#34;&#34;
@@ -289,7 +289,7 @@ Uses the simple formula by O'Shaughnessy (1987).</p>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/adefossez/julius/blob/051ec0eedc58d890fe3b2e1b6530402ac1623964/julius/core.py#L67-L71" class="git-link">Browse git</a>
+<a href="https://github.com/adefossez/julius/blob/0175e84cf6e03fb14349608b94040dc7a2d7fb00/julius/core.py#L67-L71" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def volume(x: torch.Tensor, floor=1e-8):
     &#34;&#34;&#34;
