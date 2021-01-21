@@ -115,7 +115,7 @@ class ResampleFrac(torch.nn.Module):
         shape = x.shape
         length = x.shape[-1]
         x = x.reshape(-1, length)
-        x = F.pad(x[:, None], (self._width, self._width + self.old_sr))
+        x = F.pad(x[:, None], (self._width, self._width + self.old_sr), mode='replicate')
         ys = F.conv1d(x, self.kernel, stride=self.old_sr)
         y = ys.transpose(1, 2).reshape(list(shape[:-1]) + [-1])
         return y[..., :int(self.new_sr * length / self.old_sr)]
