@@ -88,13 +88,12 @@ class LowPassFilters(torch.nn.Module):
     def forward(self, input):
         shape = list(input.shape)
         input = input.view(-1, 1, shape[-1])
-        padding = 0
         if self.pad:
-            padding = self.half_size
+            input = F.pad(input, (self.half_size, self.half_size), mode='replicate')
         if self.fft:
-            out = fft_conv1d(input, self.filters, stride=self.stride, padding=padding)
+            out = fft_conv1d(input, self.filters, stride=self.stride)
         else:
-            out = F.conv1d(input, self.filters, stride=self.stride, padding=padding)
+            out = F.conv1d(input, self.filters, stride=self.stride)
         shape.insert(0, len(self.cutoffs))
         shape[-1] = out.shape[-1]
         return out.permute(1, 0, 2).reshape(shape)
