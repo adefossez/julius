@@ -34,7 +34,7 @@ is optimized for the case mentioned before, while resampy is slower but more gen
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/adefossez/julius/blob/0175e84cf6e03fb14349608b94040dc7a2d7fb00/julius/resample.py#L0-L188" class="git-link">Browse git</a>
+<a href="https://github.com/adefossez/julius/blob/5aa88c9b7f5c8ae6ebb46fc6619acb3a0779c3c9/julius/resample.py#L0-L188" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python"># File under the MIT license, see https://github.com/adefossez/julius/LICENSE for details.
 # Author: adefossez, 2020
@@ -248,7 +248,7 @@ and cache an instance of <code><a title="julius.resample.ResampleFrac" href="#ju
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/adefossez/julius/blob/0175e84cf6e03fb14349608b94040dc7a2d7fb00/julius/resample.py#L127-L137" class="git-link">Browse git</a>
+<a href="https://github.com/adefossez/julius/blob/5aa88c9b7f5c8ae6ebb46fc6619acb3a0779c3c9/julius/resample.py#L127-L137" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def resample_frac(x: torch.Tensor, old_sr: int, new_sr: int,
                   zeros: int = 24, rolloff: float = 0.945):
@@ -307,7 +307,7 @@ for this implementation to be fast.</p>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/adefossez/julius/blob/0175e84cf6e03fb14349608b94040dc7a2d7fb00/julius/resample.py#L24-L124" class="git-link">Browse git</a>
+<a href="https://github.com/adefossez/julius/blob/5aa88c9b7f5c8ae6ebb46fc6619acb3a0779c3c9/julius/resample.py#L24-L124" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">class ResampleFrac(torch.nn.Module):
     &#34;&#34;&#34;
@@ -444,7 +444,7 @@ registered hooks while the latter silently ignores them.</p>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/adefossez/julius/blob/0175e84cf6e03fb14349608b94040dc7a2d7fb00/julius/resample.py#L112-L121" class="git-link">Browse git</a>
+<a href="https://github.com/adefossez/julius/blob/5aa88c9b7f5c8ae6ebb46fc6619acb3a0779c3c9/julius/resample.py#L112-L121" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def forward(self, x: torch.Tensor):
     if self.old_sr == self.new_sr:

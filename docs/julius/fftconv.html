@@ -31,7 +31,7 @@ evaluated with a stride of 1.</p>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/adefossez/julius/blob/0175e84cf6e03fb14349608b94040dc7a2d7fb00/julius/fftconv.py#L0-L195" class="git-link">Browse git</a>
+<a href="https://github.com/adefossez/julius/blob/5aa88c9b7f5c8ae6ebb46fc6619acb3a0779c3c9/julius/fftconv.py#L0-L195" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python"># File under the MIT license, see https://github.com/adefossez/julius/LICENSE for details.
 # Author: adefossez, 2020
@@ -280,7 +280,7 @@ more memory than the default Conv1d implementation.</p>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/adefossez/julius/blob/0175e84cf6e03fb14349608b94040dc7a2d7fb00/julius/fftconv.py#L81-L148" class="git-link">Browse git</a>
+<a href="https://github.com/adefossez/julius/blob/5aa88c9b7f5c8ae6ebb46fc6619acb3a0779c3c9/julius/fftconv.py#L81-L148" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def fft_conv1d(
         input: torch.Tensor, weight: torch.Tensor,
@@ -399,7 +399,7 @@ more memory than the default Conv1d implementation.</p>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/adefossez/julius/blob/0175e84cf6e03fb14349608b94040dc7a2d7fb00/julius/fftconv.py#L151-L196" class="git-link">Browse git</a>
+<a href="https://github.com/adefossez/julius/blob/5aa88c9b7f5c8ae6ebb46fc6619acb3a0779c3c9/julius/fftconv.py#L151-L196" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">class FFTConv1d(torch.nn.Module):
     &#34;&#34;&#34;
@@ -481,7 +481,7 @@ registered hooks while the latter silently ignores them.</p>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/adefossez/julius/blob/0175e84cf6e03fb14349608b94040dc7a2d7fb00/julius/fftconv.py#L191-L193" class="git-link">Browse git</a>
+<a href="https://github.com/adefossez/julius/blob/5aa88c9b7f5c8ae6ebb46fc6619acb3a0779c3c9/julius/fftconv.py#L191-L193" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def forward(self, input: torch.Tensor):
     return fft_conv1d(
