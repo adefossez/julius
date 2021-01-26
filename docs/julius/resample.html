@@ -34,7 +34,7 @@ is optimized for the case mentioned before, while resampy is slower but more gen
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/adefossez/julius/blob/5aa88c9b7f5c8ae6ebb46fc6619acb3a0779c3c9/julius/resample.py#L0-L188" class="git-link">Browse git</a>
+<a href="https://github.com/adefossez/julius/blob/ba05fd989f7c1063e1eefb6078774330abcc7a35/julius/resample.py#L0-L189" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python"># File under the MIT license, see https://github.com/adefossez/julius/LICENSE for details.
 # Author: adefossez, 2020
@@ -136,16 +136,17 @@ class ResampleFrac(torch.nn.Module):
         # There is probably a way to evaluate those filters more efficiently, but this is kept for
         # future work.
         idx = torch.arange(-self._width, self._width + self.old_sr).float()
-
         for i in range(self.new_sr):
             t = (-i/self.new_sr + idx/self.old_sr) * sr
             t = t.clamp_(-self.zeros, self.zeros)
             t *= math.pi
             window = torch.cos(t/self.zeros/2)**2
-            kernels.append(sinc(t) * window)
+            kernel = sinc(t) * window
+            # Renormalize kernel to ensure a constant signal is preserved.
+            kernel.div_(kernel.sum())
+            kernels.append(kernel)
 
-        scale = sr / self.old_sr
-        self.register_buffer(&#34;kernel&#34;, torch.stack(kernels).view(self.new_sr, 1, -1).mul_(scale))
+        self.register_buffer(&#34;kernel&#34;, torch.stack(kernels).view(self.new_sr, 1, -1))
 
     def forward(self, x: torch.Tensor):
         if self.old_sr == self.new_sr:
@@ -248,7 +249,7 @@ and cache an instance of <code><a title="julius.resample.ResampleFrac" href="#ju
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/adefossez/julius/blob/5aa88c9b7f5c8ae6ebb46fc6619acb3a0779c3c9/julius/resample.py#L127-L137" class="git-link">Browse git</a>
+<a href="https://github.com/adefossez/julius/blob/ba05fd989f7c1063e1eefb6078774330abcc7a35/julius/resample.py#L128-L138" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def resample_frac(x: torch.Tensor, old_sr: int, new_sr: int,
                   zeros: int = 24, rolloff: float = 0.945):
@@ -307,7 +308,7 @@ for this implementation to be fast.</p>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/adefossez/julius/blob/5aa88c9b7f5c8ae6ebb46fc6619acb3a0779c3c9/julius/resample.py#L24-L124" class="git-link">Browse git</a>
+<a href="https://github.com/adefossez/julius/blob/ba05fd989f7c1063e1eefb6078774330abcc7a35/julius/resample.py#L24-L125" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">class ResampleFrac(torch.nn.Module):
     &#34;&#34;&#34;
@@ -386,16 +387,17 @@ for this implementation to be fast.</p>
         # There is probably a way to evaluate those filters more efficiently, but this is kept for
         # future work.
         idx = torch.arange(-self._width, self._width + self.old_sr).float()
-
         for i in range(self.new_sr):
             t = (-i/self.new_sr + idx/self.old_sr) * sr
             t = t.clamp_(-self.zeros, self.zeros)
             t *= math.pi
             window = torch.cos(t/self.zeros/2)**2
-            kernels.append(sinc(t) * window)
+            kernel = sinc(t) * window
+            # Renormalize kernel to ensure a constant signal is preserved.
+            kernel.div_(kernel.sum())
+            kernels.append(kernel)
 
-        scale = sr / self.old_sr
-        self.register_buffer(&#34;kernel&#34;, torch.stack(kernels).view(self.new_sr, 1, -1).mul_(scale))
+        self.register_buffer(&#34;kernel&#34;, torch.stack(kernels).view(self.new_sr, 1, -1))
 
     def forward(self, x: torch.Tensor):
         if self.old_sr == self.new_sr:
@@ -444,7 +446,7 @@ registered hooks while the latter silently ignores them.</p>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/adefossez/julius/blob/5aa88c9b7f5c8ae6ebb46fc6619acb3a0779c3c9/julius/resample.py#L112-L121" class="git-link">Browse git</a>
+<a href="https://github.com/adefossez/julius/blob/ba05fd989f7c1063e1eefb6078774330abcc7a35/julius/resample.py#L113-L122" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def forward(self, x: torch.Tensor):
     if self.old_sr == self.new_sr:

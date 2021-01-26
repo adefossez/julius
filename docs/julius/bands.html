@@ -26,7 +26,7 @@
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/adefossez/julius/blob/5aa88c9b7f5c8ae6ebb46fc6619acb3a0779c3c9/julius/bands.py#L0-L114" class="git-link">Browse git</a>
+<a href="https://github.com/adefossez/julius/blob/ba05fd989f7c1063e1eefb6078774330abcc7a35/julius/bands.py#L0-L114" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python"># File under the MIT license, see https://github.com/adefossez/julius/LICENSE for details.
 # Author: adefossez, 2020
@@ -164,7 +164,7 @@ def split_bands(signal: torch.Tensor, sample_rate: float, n_bands: Optional[int]
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/adefossez/julius/blob/5aa88c9b7f5c8ae6ebb46fc6619acb3a0779c3c9/julius/bands.py#L105-L115" class="git-link">Browse git</a>
+<a href="https://github.com/adefossez/julius/blob/ba05fd989f7c1063e1eefb6078774330abcc7a35/julius/bands.py#L105-L115" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def split_bands(signal: torch.Tensor, sample_rate: float, n_bands: Optional[int] = None,
                 cutoffs: Optional[Sequence[float]] = None, pad: bool = True,
@@ -234,7 +234,7 @@ If <code>n_bands</code> was provided, <code>B = n_bands</code> otherwise <code>B
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/adefossez/julius/blob/5aa88c9b7f5c8ae6ebb46fc6619acb3a0779c3c9/julius/bands.py#L14-L102" class="git-link">Browse git</a>
+<a href="https://github.com/adefossez/julius/blob/ba05fd989f7c1063e1eefb6078774330abcc7a35/julius/bands.py#L14-L102" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">class SplitBands(torch.nn.Module):
     &#34;&#34;&#34;
@@ -349,7 +349,7 @@ If <code>n_bands</code> was provided, <code>B = n_bands</code> otherwise <code>B
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/adefossez/julius/blob/5aa88c9b7f5c8ae6ebb46fc6619acb3a0779c3c9/julius/bands.py#L92-L99" class="git-link">Browse git</a>
+<a href="https://github.com/adefossez/julius/blob/ba05fd989f7c1063e1eefb6078774330abcc7a35/julius/bands.py#L92-L99" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">@property
 def cutoffs(self):
@@ -380,7 +380,7 @@ registered hooks while the latter silently ignores them.</p>
 <details class="source">
 <summary>
 <span>Expand source code</span>
-<a href="https://github.com/adefossez/julius/blob/5aa88c9b7f5c8ae6ebb46fc6619acb3a0779c3c9/julius/bands.py#L77-L90" class="git-link">Browse git</a>
+<a href="https://github.com/adefossez/julius/blob/ba05fd989f7c1063e1eefb6078774330abcc7a35/julius/bands.py#L77-L90" class="git-link">Browse git</a>
 </summary>
 <pre><code class="python">def forward(self, input):
     if self.lowpass is None:
