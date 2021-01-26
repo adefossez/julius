@@ -114,6 +114,15 @@ class TestResampleFrac(_BaseTest):
         jitted = th.jit.script(mod)
         self.assertEqual(list(jitted(x).shape), [7 * 26])
 
+    def test_constant(self):
+        x = th.ones(4096)
+        for zeros in [4, 10]:
+            for old_sr in [1, 4, 10]:
+                for new_sr in [1, 4, 10]:
+                    y_low = resample.resample_frac(x, old_sr, new_sr, zeros=zeros)
+                    self.assertLessEqual(
+                        (y_low - 1).abs().mean(), 1e-6, (zeros, old_sr, new_sr))
+
 
 if __name__ == '__main__':
     unittest.main()

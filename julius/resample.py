@@ -98,16 +98,17 @@ class ResampleFrac(torch.nn.Module):
         # There is probably a way to evaluate those filters more efficiently, but this is kept for
         # future work.
         idx = torch.arange(-self._width, self._width + self.old_sr).float()
-
         for i in range(self.new_sr):
             t = (-i/self.new_sr + idx/self.old_sr) * sr
             t = t.clamp_(-self.zeros, self.zeros)
             t *= math.pi
             window = torch.cos(t/self.zeros/2)**2
-            kernels.append(sinc(t) * window)
+            kernel = sinc(t) * window
+            # Renormalize kernel to ensure a constant signal is preserved.
+            kernel.div_(kernel.sum())
+            kernels.append(kernel)
 
-        scale = sr / self.old_sr
-        self.register_buffer("kernel", torch.stack(kernels).view(self.new_sr, 1, -1).mul_(scale))
+        self.register_buffer("kernel", torch.stack(kernels).view(self.new_sr, 1, -1))
 
     def forward(self, x: torch.Tensor):
         if self.old_sr == self.new_sr:

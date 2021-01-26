@@ -82,6 +82,13 @@ class TestLowPassFilters(_BaseTest):
         jitted = th.jit.script(mod)
         self.assertEqual(list(jitted(x).shape), [128])
 
+    def test_constant(self):
+        x = th.ones(2048)
+        for zeros in [4, 10]:
+            for freq in [0.01, 0.1]:
+                y_low = lowpass_filter(x, freq, zeros=zeros)
+                self.assertLessEqual((y_low - 1).abs().mean(), 1e-6, (zeros, freq))
+
 
 if __name__ == '__main__':
     unittest.main()
