@@ -82,7 +82,9 @@ class LowPassFilters(torch.nn.Module):
         filters = []
         for cutoff in cutoffs:
             filter_ = 2 * cutoff * window * sinc(2 * cutoff * math.pi * time)
-            filters.append(filter_)
+            # Normalize filter to have sum = 1, otherwise we will have a small leakage
+            # of the constant component in the input signal.
+            filters.append(filter_ / filter_.sum())
         self.register_buffer("filters", torch.stack(filters)[:, None])
 
     def forward(self, input):
