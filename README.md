@@ -23,6 +23,12 @@ Along that, you might found useful utilities in:
 <img src="./logo.png" alt="Representation of the convolutions filters used for the efficient resampling."
 width="500px"></p>
 
+## News
+
+- 26/01/2021: __`julius` 0.2.2 released:__ fixing normalization of filters in lowpass and resample to avoid very low frequencies to be leaked.
+  Switch from zero padding to replicate padding (uses first/last value instead of 0) to avoid discontinuities with strong artifacts.
+- 20/01/2021: `julius` implementation of resampling is now officially <a href="https://github.com/pytorch/audio/pull/1087">part of Torchaudio.</a>
+
 ## Installation
 
 `julius` requires python 3.6. To install:
