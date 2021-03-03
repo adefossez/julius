@@ -1,4 +1,4 @@
-all: tests dist
+all: docs tests dist
 
 tests:
 	coverage run -m unittest discover -s tests || exit 1
