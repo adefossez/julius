@@ -56,7 +56,7 @@ class SplitBands(torch.nn.Module):
 
         self.sample_rate = sample_rate
         self.n_bands = n_bands
-        self._cutoffs = list(cutoffs)
+        self._cutoffs = list(cutoffs) if cutoffs is not None else None
         self.pad = pad
         self.zeros = zeros
         self.fft = fft
