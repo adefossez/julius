@@ -26,6 +26,7 @@ jobs:
       run: |
         make docs
         git add -f docs
+        git commit -m docs
 
     - name: Push branch
       run: |
