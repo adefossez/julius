@@ -37,5 +37,5 @@ from .bands import SplitBands, split_bands
 from .fftconv import fft_conv1d, FFTConv1d
 from .filters import bandpass_filter, BandPassFilter
 from .filters import highpass_filter, highpass_filters, HighPassFilter, HighPassFilters
-from .lowpass import lowpass_filter, lowpass_filter, LowPassFilters, LowPassFilter
+from .lowpass import lowpass_filter, lowpass_filters, LowPassFilters, LowPassFilter
 from .resample import resample_frac, ResampleFrac
