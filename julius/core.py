@@ -1,9 +1,11 @@
 # File under the MIT license, see https://github.com/adefossez/julius/LICENSE for details.
 # Author: adefossez, 2020
 """
-Signal processing related utilities.
+Signal processing or PyTorch related utilities.
 """
 import math
+import typing as tp
+
 import torch
 from torch.nn import functional as F
 
@@ -82,3 +84,39 @@ def pure_tone(freq: float, sr: float = 128, dur: float = 4, device=None):
     """
     time = torch.arange(int(sr * dur), device=device).float() / sr
     return torch.cos(2 * math.pi * freq * time)
+
+
+def unfold(input, kernel_size: int, stride: int):
+    """1D only unfolding similar to the one from PyTorch.
+    However PyTorch unfold is extremely slow.
+
+    Given an input tensor of size `[*, T]` this will return
+    a tensor `[*, F, K]` with `K` the kernel size, and `F` the number
+    of frames. The i-th frame is a view onto `i * stride: i * stride + kernel_size`.
+    This will automatically pad the input to cover at least once all entries in `input`.
+
+    Args:
+        input (Tensor): tensor for which to return the frames.
+        kernel_size (int): size of each frame.
+        stride (int): stride between each frame.
+
+    Shape:
+
+        - Inputs: `input` is `[*, T]`
+        - Output: `[*, F, kernel_size]` with `F = 1 + ceil((T - kernel_size) / stride)`
+
+
+    ..Warning:: unlike PyTorch unfold, this will pad the input
+        so that any position in `input` is covered by at least one frame.
+    """
+    shape = list(input.shape)
+    length = shape.pop(-1)
+    n_frames = math.ceil((max(length, kernel_size) - kernel_size) / stride) + 1
+    tgt_length = (n_frames - 1) * stride + kernel_size
+    padded = F.pad(input, (0, tgt_length - length)).contiguous()
+    strides: tp.List[int] = []
+    for dim in range(padded.dim()):
+        strides.append(padded.stride(dim))
+    assert strides.pop(-1) == 1, 'data should be contiguous'
+    strides = strides + [stride, 1]
+    return padded.as_strided(shape + [n_frames, kernel_size], strides)
