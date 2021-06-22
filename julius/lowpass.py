@@ -52,6 +52,11 @@ class LowPassFilters(torch.nn.Module):
         frequency provided. If you combine a lot of filters with very diverse frequencies, it might
         be more efficient to split them over multiple modules with similar frequencies.
 
+    ..note::
+        A lowpass with a cutoff frequency of 0 is defined as the null function
+        by convention here. This allows for a highpass with a cutoff of 0 to
+        be equal to identity, as defined in `julius.filters.HighPassFilters`.
+
     Shape:
 
         - Input: `[*, T]`
@@ -68,12 +73,14 @@ class LowPassFilters(torch.nn.Module):
                  zeros: float = 8, fft: Optional[bool] = None):
         super().__init__()
         self.cutoffs = list(cutoffs)
+        if min(self.cutoffs) < 0:
+            raise ValueError("Minimum cutoff must be larger than zero.")
         if max(self.cutoffs) > 0.5:
             raise ValueError("A cutoff above 0.5 does not make sense.")
         self.stride = stride
         self.pad = pad
         self.zeros = zeros
-        self.half_size = int(zeros / min(self.cutoffs) / 2)
+        self.half_size = int(zeros / min([c for c in self.cutoffs if c > 0]) / 2)
         if fft is None:
             fft = self.half_size > 32
         self.fft = fft
@@ -81,10 +88,14 @@ class LowPassFilters(torch.nn.Module):
         time = torch.arange(-self.half_size, self.half_size + 1)
         filters = []
         for cutoff in cutoffs:
-            filter_ = 2 * cutoff * window * sinc(2 * cutoff * math.pi * time)
-            # Normalize filter to have sum = 1, otherwise we will have a small leakage
-            # of the constant component in the input signal.
-            filters.append(filter_ / filter_.sum())
+            if cutoff == 0:
+                filter_ = torch.zeros_like(time)
+            else:
+                filter_ = 2 * cutoff * window * sinc(2 * cutoff * math.pi * time)
+                # Normalize filter to have sum = 1, otherwise we will have a small leakage
+                # of the constant component in the input signal.
+                filter_ /= filter_.sum()
+            filters.append(filter_)
         self.register_buffer("filters", torch.stack(filters)[:, None])
 
     def forward(self, input):
@@ -122,12 +133,27 @@ class LowPassFilter(torch.nn.Module):
     def __init__(self, cutoff: float, stride: int = 1, pad: bool = True,
                  zeros: float = 8, fft: Optional[bool] = None):
         super().__init__()
-        self.cutoffs = cutoff
-        self.stride = stride
-        self.pad = pad
-        self.zeros = zeros
         self._lowpasses = LowPassFilters([cutoff], stride, pad, zeros, fft)
-        self.fft = self._lowpasses.fft
+
+    @property
+    def cutoff(self):
+        return self._lowpasses.cutoffs[0]
+
+    @property
+    def stride(self):
+        return self._lowpasses.stride
+
+    @property
+    def pad(self):
+        return self._lowpasses.pad
+
+    @property
+    def zeros(self):
+        return self._lowpasses.zeros
+
+    @property
+    def fft(self):
+        return self._lowpasses.fft
 
     def forward(self, input):
         return self._lowpasses(input)[0]

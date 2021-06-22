@@ -5,7 +5,7 @@ Non signal processing related utilities.
 """
 
 import inspect
-from typing import Optional, List
+from typing import Any, Optional, List
 import sys
 import time
 
