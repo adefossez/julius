@@ -46,7 +46,6 @@ class SplitBands(torch.nn.Module):
     >>> list(bands(x).shape)
     [10, 6, 4, 1024]
     """
-    lowpass: Optional[torch.nn.Module]
 
     def __init__(self, sample_rate: float, n_bands: Optional[int] = None,
                  cutoffs: Optional[Sequence[float]] = None, pad: bool = True,
@@ -75,7 +74,9 @@ class SplitBands(torch.nn.Module):
             self.lowpass = LowPassFilters(
                 [c / sample_rate for c in cutoffs], pad=pad, zeros=zeros, fft=fft)
         else:
-            self.lowpass = None
+            # Here I cannot make both TorchScript and MyPy happy.
+            # I miss the good old times, before all this madness was created.
+            self.lowpass = None  # type: ignore
 
     def forward(self, input):
         if self.lowpass is None:

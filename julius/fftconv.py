@@ -29,11 +29,11 @@ def _new_rfft(x: torch.Tensor):
 
 
 def _old_rfft(x: torch.Tensor):
-    return torch.rfft(x, 1)
+    return torch.rfft(x, 1)  # type: ignore
 
 
 def _old_irfft(x: torch.Tensor, length: int):
-    return torch.irfft(x, 1, signal_sizes=(length,))
+    return torch.irfft(x, 1, signal_sizes=(length,))  # type: ignore
 
 
 def _new_irfft(x: torch.Tensor, length: int):
@@ -131,7 +131,7 @@ def fft_conv1d(
     # We pad the input and get the different frames, on which
     input = pad_to(input, _full_length(length, block_size, fold_stride))
     # We get a series of frames with a small overlap (because FFT will do a circular convolution).
-    frames = F.unfold(input[:, :, None], kernel_size=[1, block_size], stride=[1, fold_stride])
+    frames = F.unfold(input[:, :, None], kernel_size=(1, block_size), stride=(1, fold_stride))
     frames = frames.view(batch, channels, block_size, -1).transpose(2, 3)
 
     frames_z = _rfft(frames)
