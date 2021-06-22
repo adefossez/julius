@@ -14,6 +14,7 @@ For now, I have implemented:
 - `julius.resample`: fast sinc resampling.
 - `julius.fftconv`: FFT based convolutions.
 - `julius.lowpass`: FIR low pass filter banks.
+- `julius.filters`: FIR high pass and band pass filters.
 - `julius.bands`: Decomposition of a waveform signal over mel-scale frequency bands.
 
 Along that, you might found useful utilities in:
@@ -34,5 +35,7 @@ to learn more about DSP.
 
 from .bands import SplitBands, split_bands
 from .fftconv import fft_conv1d, FFTConv1d
-from .lowpass import lowpass_filters, lowpass_filter, LowPassFilters, LowPassFilter
+from .filters import bandpass_filter, BandPassFilter
+from .filters import highpass_filter, highpass_filters, HighPassFilter, HighPassFilters
+from .lowpass import lowpass_filter, lowpass_filters, LowPassFilters, LowPassFilter
 from .resample import resample_frac, ResampleFrac

@@ -1,7 +1,7 @@
-name: tests
+name: linter
 on:
   push:
-    branches: [ main, v2, dev ]
+    branches: [ main ]
   pull_request:
     branches: [ main ]
 
@@ -21,9 +21,4 @@ jobs:
 
     - name: Run tests
       run: |
-        make tests
-
-    - name: Run tests, torch 1.7
-      run: |
-        pip install torch==1.7
-        make tests
+        make linter

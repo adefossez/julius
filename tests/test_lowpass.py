@@ -38,15 +38,15 @@ class TestLowPassFilters(_BaseTest):
             sr = 1024
             tone = pure_tone(freq * sr, sr=sr, dur=10)
 
-            # For this test we accept 5% tolerance, as 5% of delta in amplitude is -52dB.
+            # For this test we accept 5% tolerance in amplitude, or -26dB in power.
             tol = 5
             zeros = 16
 
-            # If cutoff freauency is under freq, output should be zero
+            # If cutoff frequency is under freq, output should be zero
             y_killed = lowpass_filter(tone, 0.9 * freq, zeros=zeros)
             self.assertSimilar(y_killed, 0 * y_killed, tone, f"freq={freq}, kill", tol=tol)
 
-            # If cutoff freauency is under freq, output should be input
+            # If cutoff frequency is under freq, output should be input
             y_pass = lowpass_filter(tone, 1.1 * freq, zeros=zeros)
             self.assertSimilar(y_pass, tone, tone, f"freq={freq}, pass", tol=tol)
 

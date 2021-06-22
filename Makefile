@@ -1,4 +1,8 @@
-all: docs tests dist
+all: docs tests linter dist
+
+linter:
+	flake8 julius && mypy -p julius
+
 
 tests:
 	coverage run -m unittest discover -s tests || exit 1

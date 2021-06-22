@@ -8,17 +8,16 @@ This module implements efficient FFT based convolutions for such convolutions. A
 application is for evaluationg FIR filters with a long receptive field, typically
 evaluated with a stride of 1.
 """
-import math
 from typing import Optional
 
 import torch
 try:
     import torch.fft as new_fft
 except ImportError:
-    new_fft = None
+    new_fft = None  # type: ignore
 from torch.nn import functional as F
 
-from .core import pad_to
+from .core import pad_to, unfold
 from .utils import simple_repr
 
 
@@ -29,11 +28,12 @@ def _new_rfft(x: torch.Tensor):
 
 
 def _old_rfft(x: torch.Tensor):
-    return torch.rfft(x, 1)
+    return torch.rfft(x, 1)  # type: ignore
 
 
 def _old_irfft(x: torch.Tensor, length: int):
-    return torch.irfft(x, 1, signal_sizes=(length,))
+    result = torch.irfft(x, 1, signal_sizes=(length,))  # type: ignore
+    return result
 
 
 def _new_irfft(x: torch.Tensor, length: int):
@@ -66,16 +66,6 @@ def _compl_mul_conjugate(a: torch.Tensor, b: torch.Tensor):
         torch.einsum(op, a[..., 1], b[..., 0]) - torch.einsum(op, a[..., 0], b[..., 1])
     ],
                        dim=-1)
-
-
-def _full_length(length: int, kernel_size: int, stride: int):
-    """
-    Given a convolution-like operation with the given kernel size and stride,
-    return the length the input should have so that the last frame is full.
-    """
-
-    length = max(length, kernel_size)
-    return stride * math.ceil((length - kernel_size) / stride) + kernel_size
 
 
 def fft_conv1d(
@@ -129,10 +119,7 @@ def fft_conv1d(
     weight_z = _rfft(weight)
 
     # We pad the input and get the different frames, on which
-    input = pad_to(input, _full_length(length, block_size, fold_stride))
-    # We get a series of frames with a small overlap (because FFT will do a circular convolution).
-    frames = F.unfold(input[:, :, None], kernel_size=[1, block_size], stride=[1, fold_stride])
-    frames = frames.view(batch, channels, block_size, -1).transpose(2, 3)
+    frames = unfold(input, block_size, fold_stride)
 
     frames_z = _rfft(frames)
     out_z = _compl_mul_conjugate(frames_z, weight_z)
