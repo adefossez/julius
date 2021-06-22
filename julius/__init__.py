@@ -14,6 +14,7 @@ For now, I have implemented:
 - `julius.resample`: fast sinc resampling.
 - `julius.fftconv`: FFT based convolutions.
 - `julius.lowpass`: FIR low pass filter banks.
+- `julius.filters`: FIR high pass and band pass filters.
 - `julius.bands`: Decomposition of a waveform signal over mel-scale frequency bands.
 
 Along that, you might found useful utilities in:

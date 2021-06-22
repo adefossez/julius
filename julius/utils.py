@@ -5,12 +5,13 @@ Non signal processing related utilities.
 """
 
 import inspect
-from typing import Any, Optional, List
+import typing as tp
 import sys
 import time
 
 
-def simple_repr(obj, attrs: Optional[List[str]] = None, overrides={}):
+def simple_repr(obj, attrs: tp.Optional[tp.Sequence[str]] = None,
+                overrides: dict = {}):
     """
     Return a simple representation string for `obj`.
     If `attrs` is not None, it should be a list of attributes to include.
@@ -18,7 +19,7 @@ def simple_repr(obj, attrs: Optional[List[str]] = None, overrides={}):
     params = inspect.signature(obj.__class__).parameters
     attrs_repr = []
     if attrs is None:
-        attrs = params.keys()
+        attrs = list(params.keys())
     for attr in attrs:
         display = False
         if attr in overrides:
@@ -29,7 +30,7 @@ def simple_repr(obj, attrs: Optional[List[str]] = None, overrides={}):
             continue
         if attr in params:
             param = params[attr]
-            if param.default is inspect._empty or value != param.default:
+            if param.default is inspect._empty or value != param.default:  # type: ignore
                 display = True
         else:
             display = True

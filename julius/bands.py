@@ -46,6 +46,7 @@ class SplitBands(torch.nn.Module):
     >>> list(bands(x).shape)
     [10, 6, 4, 1024]
     """
+    lowpass: Optional[torch.nn.Module]
 
     def __init__(self, sample_rate: float, n_bands: Optional[int] = None,
                  cutoffs: Optional[Sequence[float]] = None, pad: bool = True,
@@ -62,6 +63,8 @@ class SplitBands(torch.nn.Module):
         self.fft = fft
 
         if cutoffs is None:
+            if n_bands is None:
+                raise ValueError("You must provide one of n_bands or cutoffs.")
             if not n_bands >= 1:
                 raise ValueError(f"n_bands must be greater than one (got {n_bands})")
             cutoffs = mel_frequencies(n_bands + 1, 0, sample_rate / 2)[1:-1]

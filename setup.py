@@ -34,7 +34,7 @@ setup(
     url=URL,
     packages=['julius'],
     install_requires=['torch>=1.6.0'],
-    extras_require={'dev': ['coverage', 'resampy', 'pdoc3']},
+    extras_require={'dev': ['coverage', 'flake8', 'mypy', 'resampy', 'pdoc3']},
     include_package_data=True,
     license='MIT License',
     classifiers=[

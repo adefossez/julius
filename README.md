@@ -12,6 +12,7 @@ For now, I have implemented:
 - [julius.resample](https://adefossez.github.io/julius/julius/resample.html): fast sinc resampling.
 - [julius.fftconv](https://adefossez.github.io/julius/julius/fftconv.html): FFT based convolutions.
 - [julius.lowpass](https://adefossez.github.io/julius/julius/lowpass.html): FIR low pass filter banks.
+- [julius.filters](https://adefossez.github.io/julius/julius/filters.html): FIR high pass and band pass filters.
 - [julius.bands](https://adefossez.github.io/julius/julius/bands.html): Decomposition of a waveform signal over mel-scale frequency bands.
 
 Along that, you might found useful utilities in:
@@ -93,7 +94,8 @@ the true complexity of the operation).
 ### LowPass
 
 Classical Finite Impulse Reponse windowed sinc lowpass filter. It will use FFT convolutions automatically
-if the filter size is large enough.
+if the filter size is large enough. This is the basic block from which you can build
+high pass and band pass filters (see `julius.filters`).
 
 ### Bands
 

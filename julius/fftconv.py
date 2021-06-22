@@ -15,7 +15,7 @@ import torch
 try:
     import torch.fft as new_fft
 except ImportError:
-    new_fft = None
+    new_fft = None  # type: ignore
 from torch.nn import functional as F
 
 from .core import pad_to
