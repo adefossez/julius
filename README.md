@@ -106,8 +106,8 @@ instance to perform parametric EQ (see [Usage](#usage) above).
 ## Benchmarks
 
 You can find speed tests (and comparisons to reference implementations) on the
-[benchmark][bench]. The CPU benchmarks are run on a Mac Book Pro 2020, with a 2 GHz
-quadcore intel CPU. The GPUs benchmark are run on Google Colab Pro (e.g. V100 or P100 NVidia GPU).
+[benchmark][bench]. The CPU benchmarks are run on a Mac Book Pro 2020, with a 2.4 GHz
+8-core intel CPU i9. The GPUs benchmark are run on Nvidia V100 with 16GB of memory.
 We also compare the validity of our implementations, as compared to reference ones like `resampy`
 or `torch.nn.Conv1d`.
 
