@@ -34,5 +34,5 @@ to learn more about DSP.
 
 from .bands import SplitBands, split_bands
 from .fftconv import fft_conv1d, FFTConv1d
-from .lowpass import lowpass_filter, lowpass_filter, LowPassFilters, LowPassFilter
+from .lowpass import lowpass_filters, lowpass_filter, LowPassFilters, LowPassFilter
 from .resample import resample_frac, ResampleFrac
