@@ -1,5 +1,6 @@
 # Julius, fast PyTorch based DSP for audio and 1D signals
 
+![linter badge](https://github.com/adefossez/julius/workflows/linter/badge.svg)
 ![tests badge](https://github.com/adefossez/julius/workflows/tests/badge.svg)
 ![cov badge](https://github.com/adefossez/julius/workflows/cov%3E90%25/badge.svg)
 
