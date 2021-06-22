@@ -27,6 +27,9 @@ width="500px"></p>
 
 ## News
 
+- 22/06/2021: __`julius` 0.2.4 released:__: adding highpass and band passfilters.
+  Extra linting and type checking of the code. New `unfold` implemention, up to
+  x6 faster FFT convolutions and more efficient memory usage.
 - 26/01/2021: __`julius` 0.2.2 released:__ fixing normalization of filters in lowpass and resample to avoid very low frequencies to be leaked.
   Switch from zero padding to replicate padding (uses first/last value instead of 0) to avoid discontinuities with strong artifacts.
 - 20/01/2021: `julius` implementation of resampling is now officially <a href="https://github.com/pytorch/audio/pull/1087">part of Torchaudio.</a>
