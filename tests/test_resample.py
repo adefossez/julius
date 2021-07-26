@@ -145,6 +145,21 @@ class TestResampleFrac(_BaseTest):
         y = resample.resample_frac(x, old_sr=32000, new_sr=48000, output_length=48001)
         self.assertEqual(y.shape, (1, 48001))
 
+    def test_custom_output_length_extreme_resampling(self):
+        """
+        Resample a signal from 1 hz to 499 hz to check that custom_length works
+        correctly without extra internal padding
+        """
+        x = th.ones(1, 1)
+
+        resampler = resample.ResampleFrac(old_sr=1, new_sr=499)
+        y = resampler(x, output_length=500)
+        self.assertEqual(y.shape, (1, 500))
+
+        # Test functional version as well
+        y = resample.resample_frac(x, old_sr=1, new_sr=499, output_length=500)
+        self.assertEqual(y.shape, (1, 500))
+
     def test_custom_output_length_out_of_range(self):
         x = th.ones(1, 32000)
         with self.assertRaisesRegex(
