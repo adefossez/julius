@@ -16,6 +16,7 @@ import math
 
 import torch
 from torch.nn import functional as F
+from typing import Optional
 
 from .core import sinc
 from .utils import simple_repr
@@ -110,7 +111,16 @@ class ResampleFrac(torch.nn.Module):
 
         self.register_buffer("kernel", torch.stack(kernels).view(self.new_sr, 1, -1))
 
-    def forward(self, x: torch.Tensor):
+    def forward(self, x: torch.Tensor, output_length: Optional[int] = None):
+        """
+        Resample x.
+        Args:
+            x (Tensor): signal to resample, time should be the last dimension
+            output_length (int): This can be set to the desired output length
+            (last dimension). Allowed values are floor(length * new_sr / old_sr) and
+            ceil(length * new_sr / old_sr). When None (default) is specified, the
+            floored output length will be used.
+        """
         if self.old_sr == self.new_sr:
             return x
         shape = x.shape
@@ -119,14 +129,29 @@ class ResampleFrac(torch.nn.Module):
         x = F.pad(x[:, None], (self._width, self._width + self.old_sr), mode='replicate')
         ys = F.conv1d(x, self.kernel, stride=self.old_sr)  # type: ignore
         y = ys.transpose(1, 2).reshape(list(shape[:-1]) + [-1])
-        return y[..., :int(self.new_sr * length / self.old_sr)]
+
+        default_output_length = int(self.new_sr * length / self.old_sr)
+        if output_length is None:
+            output_length = default_output_length
+        elif (
+            output_length < default_output_length
+            or output_length > default_output_length + 1
+        ):
+            raise ValueError(
+                "output_length must be either {} or {}".format(
+                    default_output_length, default_output_length + 1
+                )
+            )
+
+        return y[..., :output_length]
 
     def __repr__(self):
         return simple_repr(self)
 
 
 def resample_frac(x: torch.Tensor, old_sr: int, new_sr: int,
-                  zeros: int = 24, rolloff: float = 0.945):
+                  zeros: int = 24, rolloff: float = 0.945,
+                  output_length: Optional[int] = None):
     """
     Functional version of `ResampleFrac`, refer to its documentation for more information.
 
@@ -135,7 +160,7 @@ def resample_frac(x: torch.Tensor, old_sr: int, new_sr: int,
         resampling kernel will be recomputed everytime. For best performance, you should use
         and cache an instance of `ResampleFrac`.
     """
-    return ResampleFrac(old_sr, new_sr, zeros, rolloff).to(x)(x)
+    return ResampleFrac(old_sr, new_sr, zeros, rolloff).to(x)(x, output_length)
 
 
 # Easier implementations for downsampling and upsampling by a factor of 2
