@@ -13,10 +13,10 @@ is optimized for the case mentioned before, while resampy is slower but more gen
 """
 
 import math
+from typing import Optional
 
 import torch
 from torch.nn import functional as F
-from typing import Optional
 
 from .core import sinc
 from .utils import simple_repr
@@ -133,13 +133,10 @@ class ResampleFrac(torch.nn.Module):
         default_output_length = int(self.new_sr * length / self.old_sr)
         if output_length is None:
             output_length = default_output_length
-        elif (
-            output_length < default_output_length
-            or output_length > default_output_length + 1
-        ):
+        elif output_length < 1 or output_length > default_output_length + 1:
             raise ValueError(
-                "output_length must be either {} or {}".format(
-                    default_output_length, default_output_length + 1
+                "output_length must be between 1 and {}".format(
+                    default_output_length + 1
                 )
             )
 
