@@ -117,9 +117,9 @@ class ResampleFrac(torch.nn.Module):
         Args:
             x (Tensor): signal to resample, time should be the last dimension
             output_length (int): This can be set to the desired output length
-            (last dimension). Allowed values are floor(length * new_sr / old_sr) and
-            ceil(length * new_sr / old_sr). When None (default) is specified, the
-            floored output length will be used.
+                (last dimension). Allowed values are floor(length * new_sr / old_sr) and
+                ceil(length * new_sr / old_sr). When None (default) is specified, the
+                floored output length will be used.
         """
         if self.old_sr == self.new_sr:
             return x
