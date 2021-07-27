@@ -19,7 +19,7 @@ def delta(a, b, ref, fraction=0.9):
     return 100 * th.abs(a - b).mean() / ref.std()
 
 
-TOLERANCE = 0.5  # Tolerence to errors as percentage of the std of the input signal
+TOLERANCE = 0.5  # Tolerance to errors as percentage of the std of the input signal
 
 
 class _BaseTest(unittest.TestCase):
