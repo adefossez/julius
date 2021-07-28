@@ -27,6 +27,7 @@ width="500px"></p>
 
 ## News
 
+- 28/07/2021: __`julius` 0.2.5 released:__: support for setting a custom output length when resampling.
 - 22/06/2021: __`julius` 0.2.4 released:__: adding highpass and band passfilters.
   Extra linting and type checking of the code. New `unfold` implemention, up to
   x6 faster FFT convolutions and more efficient memory usage.
@@ -52,8 +53,8 @@ import julius
 import torch
 
 signal = torch.randn(6, 4, 1024)
-# Resample from a sample rate of 100 to 70. The old and new sample rate must be integers, 
-# and resampling will be fast if they form an irreductible fraction with small numerator 
+# Resample from a sample rate of 100 to 70. The old and new sample rate must be integers,
+# and resampling will be fast if they form an irreductible fraction with small numerator
 # and denominator (here 10 and 7). Any shape is supported, last dim is time.
 resampled_signal = julius.resample_frac(signal, 100, 70)
 

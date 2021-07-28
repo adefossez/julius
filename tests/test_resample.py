@@ -170,6 +170,7 @@ class TestResampleFrac(_BaseTest):
     def test_full(self):
         x = th.randn(19)
         y = resample.resample_frac(x, 7, 1, full=True)
+        self.assertEqual(len(y), 3)
         z = resample.resample_frac(y, 5, 1, full=True)
         y2 = resample.resample_frac(z, 1, 5, full=True)
         x2 = resample.resample_frac(y2, 1, 7, output_length=len(x))
