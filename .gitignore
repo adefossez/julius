@@ -1,6 +1,8 @@
 __pycache__
 *.egg-info
 build
+env
+env_old
 dist
 .ipynb_checkpoints
 *.ipynb

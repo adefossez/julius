@@ -23,7 +23,7 @@ jobs:
       run: |
         make tests
 
-    - name: Run tests, torch 1.6
+    - name: Run tests, torch 1.7
       run: |
-        pip install torch==1.6
+        pip install torch==1.7
         make tests

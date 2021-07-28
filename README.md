@@ -1,5 +1,6 @@
 # Julius, fast PyTorch based DSP for audio and 1D signals
 
+![linter badge](https://github.com/adefossez/julius/workflows/linter/badge.svg)
 ![tests badge](https://github.com/adefossez/julius/workflows/tests/badge.svg)
 ![cov badge](https://github.com/adefossez/julius/workflows/cov%3E90%25/badge.svg)
 
@@ -26,6 +27,9 @@ width="500px"></p>
 
 ## News
 
+- 22/06/2021: __`julius` 0.2.4 released:__: adding highpass and band passfilters.
+  Extra linting and type checking of the code. New `unfold` implemention, up to
+  x6 faster FFT convolutions and more efficient memory usage.
 - 26/01/2021: __`julius` 0.2.2 released:__ fixing normalization of filters in lowpass and resample to avoid very low frequencies to be leaked.
   Switch from zero padding to replicate padding (uses first/last value instead of 0) to avoid discontinuities with strong artifacts.
 - 20/01/2021: `julius` implementation of resampling is now officially <a href="https://github.com/pytorch/audio/pull/1087">part of Torchaudio.</a>
@@ -105,8 +109,8 @@ instance to perform parametric EQ (see [Usage](#usage) above).
 ## Benchmarks
 
 You can find speed tests (and comparisons to reference implementations) on the
-[benchmark][bench]. The CPU benchmarks are run on a Mac Book Pro 2020, with a 2 GHz
-quadcore intel CPU. The GPUs benchmark are run on Google Colab Pro (e.g. V100 or P100 NVidia GPU).
+[benchmark][bench]. The CPU benchmarks are run on a Mac Book Pro 2020, with a 2.4 GHz
+8-core intel CPU i9. The GPUs benchmark are run on Nvidia V100 with 16GB of memory.
 We also compare the validity of our implementations, as compared to reference ones like `resampy`
 or `torch.nn.Conv1d`.
 

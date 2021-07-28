@@ -25,7 +25,7 @@ def delta(a, b, ref, fraction=0.8):
     return 100 * th.abs(a - b).mean() / ref.std()
 
 
-TOLERANCE = 1  # Tolerence to errors as percentage of the std of the input signal
+TOLERANCE = 1  # Tolerance to errors as percentage of the std of the input signal
 
 
 class _BaseTest(unittest.TestCase):
@@ -122,6 +122,50 @@ class TestResampleFrac(_BaseTest):
                     y_low = resample.resample_frac(x, old_sr, new_sr, zeros=zeros)
                     self.assertLessEqual(
                         (y_low - 1).abs().mean(), 1e-6, (zeros, old_sr, new_sr))
+
+    def test_default_output_length(self):
+        x = th.ones(1, 2, 32000)
+
+        resampler = resample.ResampleFrac(old_sr=32000, new_sr=48000)
+        y = resampler(x)
+        self.assertEqual(y.shape, (1, 2, 48000))
+
+        # Test functional version as well
+        y = resample.resample_frac(x, old_sr=32000, new_sr=48000)
+        self.assertEqual(y.shape, (1, 2, 48000))
+
+    def test_custom_output_length(self):
+        x = th.ones(1, 32000)
+
+        resampler = resample.ResampleFrac(old_sr=32000, new_sr=48000)
+        y = resampler(x, output_length=48001)
+        self.assertEqual(y.shape, (1, 48001))
+
+        # Test functional version as well
+        y = resample.resample_frac(x, old_sr=32000, new_sr=48000, output_length=47999)
+        self.assertEqual(y.shape, (1, 47999))
+
+    def test_custom_output_length_extreme_resampling(self):
+        """
+        Resample a signal from 1 hz to 499 hz to check that custom_length works
+        correctly without extra internal padding
+        """
+        x = th.ones(1, 1)
+
+        resampler = resample.ResampleFrac(old_sr=1, new_sr=499)
+        y = resampler(x, output_length=500)
+        self.assertEqual(y.shape, (1, 500))
+
+        # Test functional version as well
+        y = resample.resample_frac(x, old_sr=1, new_sr=499, output_length=3)
+        self.assertEqual(y.shape, (1, 3))
+
+    def test_custom_output_length_out_of_range(self):
+        x = th.ones(1, 32000)
+        with self.assertRaisesRegex(
+            ValueError, "output_length must be between 1 and 48001"
+        ):
+            resample.resample_frac(x, old_sr=32000, new_sr=48000, output_length=48002)
 
 
 if __name__ == '__main__':

@@ -12,7 +12,7 @@ URL = 'https://github.com/adefossez/julius'
 EMAIL = 'alexandre.defossez@gmail.com'
 AUTHOR = 'Alexandre Défossez'
 REQUIRES_PYTHON = '>=3.6.0'
-VERSION = "0.2.3"
+VERSION = "0.2.4"
 
 HERE = Path(__file__).parent
 
@@ -33,7 +33,7 @@ setup(
     python_requires=REQUIRES_PYTHON,
     url=URL,
     packages=['julius'],
-    install_requires=['torch>=1.6.0'],
+    install_requires=['torch>=1.7.0'],
     extras_require={'dev': ['coverage', 'flake8', 'mypy', 'resampy', 'pdoc3']},
     include_package_data=True,
     license='MIT License',
