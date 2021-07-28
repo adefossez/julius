@@ -46,7 +46,6 @@ class SplitBands(torch.nn.Module):
     >>> list(bands(x).shape)
     [10, 6, 4, 1024]
     """
-    lowpass: Optional[torch.nn.Module]
 
     def __init__(self, sample_rate: float, n_bands: Optional[int] = None,
                  cutoffs: Optional[Sequence[float]] = None, pad: bool = True,

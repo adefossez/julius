@@ -111,15 +111,19 @@ class ResampleFrac(torch.nn.Module):
 
         self.register_buffer("kernel", torch.stack(kernels).view(self.new_sr, 1, -1))
 
-    def forward(self, x: torch.Tensor, output_length: Optional[int] = None):
+    def forward(self, x: torch.Tensor, output_length: Optional[int] = None, full: bool = False):
         """
         Resample x.
         Args:
             x (Tensor): signal to resample, time should be the last dimension
-            output_length (int): This can be set to the desired output length
-                (last dimension). Allowed values are floor(length * new_sr / old_sr) and
+            output_length (None or int): This can be set to the desired output length
+                (last dimension). Allowed values are between 0 and
                 ceil(length * new_sr / old_sr). When None (default) is specified, the
-                floored output length will be used.
+                floored output length will be used. In order to select the largest possible
+                size, use the `full` argument.
+            full (bool): return the longest possible output from the input. This can be useful
+                if you chain resampling operations, and want to give the `output_length` only
+                for the last one, while passing `full=True` to all the other ones.
         """
         if self.old_sr == self.new_sr:
             return x
@@ -130,16 +134,16 @@ class ResampleFrac(torch.nn.Module):
         ys = F.conv1d(x, self.kernel, stride=self.old_sr)  # type: ignore
         y = ys.transpose(1, 2).reshape(list(shape[:-1]) + [-1])
 
-        default_output_length = int(self.new_sr * length / self.old_sr)
+        float_output_length = self.new_sr * length / self.old_sr
+        max_output_length = int(math.ceil(float_output_length))
+        default_output_length = int(float_output_length)
         if output_length is None:
-            output_length = default_output_length
-        elif output_length < 1 or output_length > default_output_length + 1:
-            raise ValueError(
-                "output_length must be between 1 and {}".format(
-                    default_output_length + 1
-                )
-            )
-
+            output_length = max_output_length if full else default_output_length
+        elif output_length < 0 or output_length > max_output_length:
+            raise ValueError(f"output_length must be between 0 and {max_output_length}")
+        else:
+            if full:
+                raise ValueError("You cannot pass both full=True and output_length")
         return y[..., :output_length]
 
     def __repr__(self):
@@ -148,7 +152,7 @@ class ResampleFrac(torch.nn.Module):
 
 def resample_frac(x: torch.Tensor, old_sr: int, new_sr: int,
                   zeros: int = 24, rolloff: float = 0.945,
-                  output_length: Optional[int] = None):
+                  output_length: Optional[int] = None, full: bool = False):
     """
     Functional version of `ResampleFrac`, refer to its documentation for more information.
 
@@ -157,7 +161,7 @@ def resample_frac(x: torch.Tensor, old_sr: int, new_sr: int,
         resampling kernel will be recomputed everytime. For best performance, you should use
         and cache an instance of `ResampleFrac`.
     """
-    return ResampleFrac(old_sr, new_sr, zeros, rolloff).to(x)(x, output_length)
+    return ResampleFrac(old_sr, new_sr, zeros, rolloff).to(x)(x, output_length, full)
 
 
 # Easier implementations for downsampling and upsampling by a factor of 2

@@ -135,7 +135,7 @@ class TestResampleFrac(_BaseTest):
         self.assertEqual(y.shape, (1, 2, 48000))
 
     def test_custom_output_length(self):
-        x = th.ones(1, 32000)
+        x = th.ones(1, 32001)
 
         resampler = resample.ResampleFrac(old_sr=32000, new_sr=48000)
         y = resampler(x, output_length=48001)
@@ -153,8 +153,8 @@ class TestResampleFrac(_BaseTest):
         x = th.ones(1, 1)
 
         resampler = resample.ResampleFrac(old_sr=1, new_sr=499)
-        y = resampler(x, output_length=500)
-        self.assertEqual(y.shape, (1, 500))
+        y = resampler(x, output_length=499)
+        self.assertEqual(y.shape, (1, 499))
 
         # Test functional version as well
         y = resample.resample_frac(x, old_sr=1, new_sr=499, output_length=3)
@@ -163,9 +163,17 @@ class TestResampleFrac(_BaseTest):
     def test_custom_output_length_out_of_range(self):
         x = th.ones(1, 32000)
         with self.assertRaisesRegex(
-            ValueError, "output_length must be between 1 and 48001"
+            ValueError, "output_length must be between 0 and 48000"
         ):
             resample.resample_frac(x, old_sr=32000, new_sr=48000, output_length=48002)
+
+    def test_full(self):
+        x = th.randn(19)
+        y = resample.resample_frac(x, 7, 1, full=True)
+        z = resample.resample_frac(y, 5, 1, full=True)
+        y2 = resample.resample_frac(z, 1, 5, full=True)
+        x2 = resample.resample_frac(y2, 1, 7, output_length=len(x))
+        self.assertEqual(x.shape, x2.shape)
 
 
 if __name__ == '__main__':
