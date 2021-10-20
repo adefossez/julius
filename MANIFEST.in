@@ -1,3 +1,4 @@
 include docs/*/*.html
 include tests/*.py
 include bench/*.py
+include julius/py.typed
