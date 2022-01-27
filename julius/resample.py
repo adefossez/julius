@@ -134,9 +134,10 @@ class ResampleFrac(torch.nn.Module):
         ys = F.conv1d(x, self.kernel, stride=self.old_sr)  # type: ignore
         y = ys.transpose(1, 2).reshape(list(shape[:-1]) + [-1])
 
-        float_output_length = self.new_sr * length / self.old_sr
-        max_output_length = int(math.ceil(float_output_length))
-        default_output_length = int(float_output_length)
+        float_output_length = torch.as_tensor(self.new_sr * length / self.old_sr)
+        max_output_length = torch.ceil(float_output_length).long()
+        default_output_length = torch.floor(float_output_length).long()
+
         if output_length is None:
             output_length = max_output_length if full else default_output_length
         elif output_length < 0 or output_length > max_output_length:
