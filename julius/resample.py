@@ -139,13 +139,14 @@ class ResampleFrac(torch.nn.Module):
         default_output_length = torch.floor(float_output_length).long()
 
         if output_length is None:
-            output_length = max_output_length if full else default_output_length
+            applied_output_length = max_output_length if full else default_output_length
         elif output_length < 0 or output_length > max_output_length:
             raise ValueError(f"output_length must be between 0 and {max_output_length}")
         else:
+            applied_output_length = torch.tensor(output_length)
             if full:
                 raise ValueError("You cannot pass both full=True and output_length")
-        return y[..., :output_length]
+        return y[..., :applied_output_length]
 
     def __repr__(self):
         return simple_repr(self)
