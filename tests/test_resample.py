@@ -1,5 +1,9 @@
 # File under the MIT license, see https://github.com/adefossez/julius/LICENSE for details.
 # Author: adefossez, 2020
+import os
+import tempfile
+import uuid
+from pathlib import Path
 
 import math
 import random
@@ -8,7 +12,14 @@ import unittest
 import resampy
 import torch as th
 
-from julius import resample
+from julius import resample, ResampleFrac
+
+is_onnxruntime_installed = True
+try:
+    import onnxruntime
+except ImportError:
+    print("Warning: onnxruntime is not installed. Some tests may be skipped")
+    is_onnxruntime_installed = False
 
 
 def pure_tone(freq, sr=128, dur=4):
@@ -175,6 +186,46 @@ class TestResampleFrac(_BaseTest):
         y2 = resample.resample_frac(z, 1, 5, full=True)
         x2 = resample.resample_frac(y2, 1, 7, output_length=len(x))
         self.assertEqual(x.shape, x2.shape)
+
+    @unittest.skipUnless(is_onnxruntime_installed, "onnxruntime is not installed")
+    def test_onnx_compatibility(self):
+        tmp_onnx_file_path = os.path.join(
+            tempfile.gettempdir(), str(uuid.uuid4()) + ".onnx"
+        )
+        try:
+            resampler = ResampleFrac(old_sr=32_000, new_sr=16_000)
+            example_input1 = th.rand(1, 100, dtype=th.float32)
+            example_input2 = th.rand(1, 124, dtype=th.float32)
+
+            th.onnx.export(
+                resampler,
+                example_input1,
+                tmp_onnx_file_path,
+                export_params=True,
+                opset_version=11,
+                do_constant_folding=True,
+                input_names=["input"],
+                output_names=["output"],
+                dynamic_axes={
+                    "input": {0: "num_channels", 1: "num_samples"},
+                    "output": {0: "num_channels", 1: "num_samples"},
+                },
+            )
+            onnx_model = onnxruntime.InferenceSession(tmp_onnx_file_path)
+            onnxruntime_output = onnx_model.run(
+                ["output"], {"input": example_input2.numpy()}
+            )[0]
+            self.assertEqual(onnxruntime_output.shape[-1], 62)
+
+            torch_output = resampler(example_input2)
+            self.assertEqual(torch_output.shape[-1], 62)
+
+            self.assertSimilar(
+                th.from_numpy(onnxruntime_output), torch_output, example_input2
+            )
+        finally:
+            if os.path.isfile(tmp_onnx_file_path):
+                os.remove(tmp_onnx_file_path)
 
 
 if __name__ == '__main__':
