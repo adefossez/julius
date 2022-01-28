@@ -146,7 +146,7 @@ class ResampleFrac(torch.nn.Module):
             applied_output_length = torch.tensor(output_length)
             if full:
                 raise ValueError("You cannot pass both full=True and output_length")
-        return y[..., :applied_output_length]
+        return y[..., :applied_output_length]  # type: ignore
 
     def __repr__(self):
         return simple_repr(self)
