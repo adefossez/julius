@@ -27,6 +27,7 @@ width="500px"></p>
 
 ## News
 
+- 19/09/2022: __`julius` 0.2.6 released:__: py.typed file added, fixed ONNX compat (thanks @iver56)
 - 28/07/2021: __`julius` 0.2.5 released:__: support for setting a custom output length when resampling.
 - 22/06/2021: __`julius` 0.2.4 released:__: adding highpass and band passfilters.
   Extra linting and type checking of the code. New `unfold` implemention, up to
