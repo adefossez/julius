@@ -1,0 +1,365 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
+<meta name="generator" content="pdoc 0.10.0" />
+<title>julius.utils API documentation</title>
+<meta name="description" content="Non signal processing related utilities." />
+<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/sanitize.min.css" integrity="sha256-PK9q560IAAa6WVRRh76LtCaI8pjTJ2z11v0miyNNjrs=" crossorigin>
+<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/typography.min.css" integrity="sha256-7l/o7C8jubJiy74VsKTidCy1yBkRtiUGbVkYBylBqUg=" crossorigin>
+<link rel="stylesheet preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/styles/github.min.css" crossorigin>
+<style>:root{--highlight-color:#fe9}.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:30px;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:1em 0 .50em 0}h3{font-size:1.4em;margin:25px 0 10px 0}h4{margin:0;font-size:105%}h1:target,h2:target,h3:target,h4:target,h5:target,h6:target{background:var(--highlight-color);padding:.2em 0}a{color:#058;text-decoration:none;transition:color .3s ease-in-out}a:hover{color:#e82}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900}pre code{background:#f8f8f8;font-size:.8em;line-height:1.4em}code{background:#f2f2f1;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{background:#f8f8f8;border:0;border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0;padding:1ex}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-weight:bold;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}dt:target .name{background:var(--highlight-color)}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}td{padding:0 .5em}.admonition{padding:.1em .5em;margin-bottom:1em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%;height:100vh;overflow:auto;position:sticky;top:0}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.item .name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul{padding-left:1.5em}.toc > ul > li{margin-top:.5em}}</style>
+<style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/highlight.min.js" integrity="sha256-Uv3H6lx7dJmRfRvH8TH6kJD1TSK1aFcwgx+mdg3epi8=" crossorigin></script>
+<script>window.addEventListener('DOMContentLoaded', () => hljs.initHighlighting())</script>
+</head>
+<body>
+<main>
+<article id="content">
+<header>
+<h1 class="title">Module <code>julius.utils</code></h1>
+</header>
+<section id="section-intro">
+<p>Non signal processing related utilities.</p>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+<a href="https://github.com/adefossez/julius/blob/486c0329158ad6c137d18bcddc5461d493005c65/julius/utils.py#L1-L101" class="git-link">Browse git</a>
+</summary>
+<pre><code class="python"># File under the MIT license, see https://github.com/adefossez/julius/LICENSE for details.
+# Author: adefossez, 2020
+&#34;&#34;&#34;
+Non signal processing related utilities.
+&#34;&#34;&#34;
+
+import inspect
+import typing as tp
+import sys
+import time
+
+
+def simple_repr(obj, attrs: tp.Optional[tp.Sequence[str]] = None,
+                overrides: dict = {}):
+    &#34;&#34;&#34;
+    Return a simple representation string for `obj`.
+    If `attrs` is not None, it should be a list of attributes to include.
+    &#34;&#34;&#34;
+    params = inspect.signature(obj.__class__).parameters
+    attrs_repr = []
+    if attrs is None:
+        attrs = list(params.keys())
+    for attr in attrs:
+        display = False
+        if attr in overrides:
+            value = overrides[attr]
+        elif hasattr(obj, attr):
+            value = getattr(obj, attr)
+        else:
+            continue
+        if attr in params:
+            param = params[attr]
+            if param.default is inspect._empty or value != param.default:  # type: ignore
+                display = True
+        else:
+            display = True
+
+        if display:
+            attrs_repr.append(f&#34;{attr}={value}&#34;)
+    return f&#34;{obj.__class__.__name__}({&#39;,&#39;.join(attrs_repr)})&#34;
+
+
+class MarkdownTable:
+    &#34;&#34;&#34;
+    Simple MarkdownTable generator. The column titles should be large enough
+    for the lines content. This will right align everything.
+
+    &gt;&gt;&gt; import io  # we use io purely for test purposes, default is sys.stdout.
+    &gt;&gt;&gt; file = io.StringIO()
+    &gt;&gt;&gt; table = MarkdownTable([&#34;Item Name&#34;, &#34;Price&#34;], file=file)
+    &gt;&gt;&gt; table.header(); table.line([&#34;Honey&#34;, &#34;5&#34;]); table.line([&#34;Car&#34;, &#34;5,000&#34;])
+    &gt;&gt;&gt; print(file.getvalue().strip())  # Strip for test purposes
+    | Item Name | Price |
+    |-----------|-------|
+    |     Honey |     5 |
+    |       Car | 5,000 |
+    &#34;&#34;&#34;
+    def __init__(self, columns, file=sys.stdout):
+        self.columns = columns
+        self.file = file
+
+    def _writeln(self, line):
+        self.file.write(&#34;|&#34; + &#34;|&#34;.join(line) + &#34;|\n&#34;)
+
+    def header(self):
+        self._writeln(f&#34; {col} &#34; for col in self.columns)
+        self._writeln(&#34;-&#34; * (len(col) + 2) for col in self.columns)
+
+    def line(self, line):
+        out = []
+        for val, col in zip(line, self.columns):
+            val = format(val, &#39;&gt;&#39; + str(len(col)))
+            out.append(&#34; &#34; + val + &#34; &#34;)
+        self._writeln(out)
+
+
+class Chrono:
+    &#34;&#34;&#34;
+    Measures ellapsed time, calling `torch.cuda.synchronize` if necessary.
+    `Chrono` instances can be used as context managers (e.g. with `with`).
+    Upon exit of the block, you can access the duration of the block in seconds
+    with the `duration` attribute.
+
+    &gt;&gt;&gt; with Chrono() as chrono:
+    ...     _ = sum(range(10_000))
+    ...
+    &gt;&gt;&gt; print(chrono.duration &lt; 10)  # Should be true unless on a really slow computer.
+    True
+    &#34;&#34;&#34;
+    def __init__(self):
+        self.duration = None
+
+    def __enter__(self):
+        self._begin = time.time()
+        return self
+
+    def __exit__(self, exc_type, exc_value, exc_tracebck):
+        import torch
+        if torch.cuda.is_available():
+            torch.cuda.synchronize()
+        self.duration = time.time() - self._begin</code></pre>
+</details>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+<h2 class="section-title" id="header-functions">Functions</h2>
+<dl>
+<dt id="julius.utils.simple_repr"><code class="name flex">
+<span>def <span class="ident">simple_repr</span></span>(<span>obj, attrs: Optional[Sequence[str]] = None, overrides: dict = {})</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Return a simple representation string for <code>obj</code>.
+If <code>attrs</code> is not None, it should be a list of attributes to include.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+<a href="https://github.com/adefossez/julius/blob/486c0329158ad6c137d18bcddc5461d493005c65/julius/utils.py#L13-L40" class="git-link">Browse git</a>
+</summary>
+<pre><code class="python">def simple_repr(obj, attrs: tp.Optional[tp.Sequence[str]] = None,
+                overrides: dict = {}):
+    &#34;&#34;&#34;
+    Return a simple representation string for `obj`.
+    If `attrs` is not None, it should be a list of attributes to include.
+    &#34;&#34;&#34;
+    params = inspect.signature(obj.__class__).parameters
+    attrs_repr = []
+    if attrs is None:
+        attrs = list(params.keys())
+    for attr in attrs:
+        display = False
+        if attr in overrides:
+            value = overrides[attr]
+        elif hasattr(obj, attr):
+            value = getattr(obj, attr)
+        else:
+            continue
+        if attr in params:
+            param = params[attr]
+            if param.default is inspect._empty or value != param.default:  # type: ignore
+                display = True
+        else:
+            display = True
+
+        if display:
+            attrs_repr.append(f&#34;{attr}={value}&#34;)
+    return f&#34;{obj.__class__.__name__}({&#39;,&#39;.join(attrs_repr)})&#34;</code></pre>
+</details>
+</dd>
+</dl>
+</section>
+<section>
+<h2 class="section-title" id="header-classes">Classes</h2>
+<dl>
+<dt id="julius.utils.Chrono"><code class="flex name class">
+<span>class <span class="ident">Chrono</span></span>
+</code></dt>
+<dd>
+<div class="desc"><p>Measures ellapsed time, calling <code>torch.cuda.synchronize</code> if necessary.
+<code><a title="julius.utils.Chrono" href="#julius.utils.Chrono">Chrono</a></code> instances can be used as context managers (e.g. with <code>with</code>).
+Upon exit of the block, you can access the duration of the block in seconds
+with the <code>duration</code> attribute.</p>
+<pre><code class="language-python-repl">&gt;&gt;&gt; with Chrono() as chrono:
+...     _ = sum(range(10_000))
+...
+&gt;&gt;&gt; print(chrono.duration &lt; 10)  # Should be true unless on a really slow computer.
+True
+</code></pre></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+<a href="https://github.com/adefossez/julius/blob/486c0329158ad6c137d18bcddc5461d493005c65/julius/utils.py#L77-L101" class="git-link">Browse git</a>
+</summary>
+<pre><code class="python">class Chrono:
+    &#34;&#34;&#34;
+    Measures ellapsed time, calling `torch.cuda.synchronize` if necessary.
+    `Chrono` instances can be used as context managers (e.g. with `with`).
+    Upon exit of the block, you can access the duration of the block in seconds
+    with the `duration` attribute.
+
+    &gt;&gt;&gt; with Chrono() as chrono:
+    ...     _ = sum(range(10_000))
+    ...
+    &gt;&gt;&gt; print(chrono.duration &lt; 10)  # Should be true unless on a really slow computer.
+    True
+    &#34;&#34;&#34;
+    def __init__(self):
+        self.duration = None
+
+    def __enter__(self):
+        self._begin = time.time()
+        return self
+
+    def __exit__(self, exc_type, exc_value, exc_tracebck):
+        import torch
+        if torch.cuda.is_available():
+            torch.cuda.synchronize()
+        self.duration = time.time() - self._begin</code></pre>
+</details>
+</dd>
+<dt id="julius.utils.MarkdownTable"><code class="flex name class">
+<span>class <span class="ident">MarkdownTable</span></span>
+<span>(</span><span>columns, file=sys.stdout)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Simple MarkdownTable generator. The column titles should be large enough
+for the lines content. This will right align everything.</p>
+<pre><code class="language-python-repl">&gt;&gt;&gt; import io  # we use io purely for test purposes, default is sys.stdout.
+&gt;&gt;&gt; file = io.StringIO()
+&gt;&gt;&gt; table = MarkdownTable([&quot;Item Name&quot;, &quot;Price&quot;], file=file)
+&gt;&gt;&gt; table.header(); table.line([&quot;Honey&quot;, &quot;5&quot;]); table.line([&quot;Car&quot;, &quot;5,000&quot;])
+&gt;&gt;&gt; print(file.getvalue().strip())  # Strip for test purposes
+| Item Name | Price |
+|-----------|-------|
+|     Honey |     5 |
+|       Car | 5,000 |
+</code></pre></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+<a href="https://github.com/adefossez/julius/blob/486c0329158ad6c137d18bcddc5461d493005c65/julius/utils.py#L43-L74" class="git-link">Browse git</a>
+</summary>
+<pre><code class="python">class MarkdownTable:
+    &#34;&#34;&#34;
+    Simple MarkdownTable generator. The column titles should be large enough
+    for the lines content. This will right align everything.
+
+    &gt;&gt;&gt; import io  # we use io purely for test purposes, default is sys.stdout.
+    &gt;&gt;&gt; file = io.StringIO()
+    &gt;&gt;&gt; table = MarkdownTable([&#34;Item Name&#34;, &#34;Price&#34;], file=file)
+    &gt;&gt;&gt; table.header(); table.line([&#34;Honey&#34;, &#34;5&#34;]); table.line([&#34;Car&#34;, &#34;5,000&#34;])
+    &gt;&gt;&gt; print(file.getvalue().strip())  # Strip for test purposes
+    | Item Name | Price |
+    |-----------|-------|
+    |     Honey |     5 |
+    |       Car | 5,000 |
+    &#34;&#34;&#34;
+    def __init__(self, columns, file=sys.stdout):
+        self.columns = columns
+        self.file = file
+
+    def _writeln(self, line):
+        self.file.write(&#34;|&#34; + &#34;|&#34;.join(line) + &#34;|\n&#34;)
+
+    def header(self):
+        self._writeln(f&#34; {col} &#34; for col in self.columns)
+        self._writeln(&#34;-&#34; * (len(col) + 2) for col in self.columns)
+
+    def line(self, line):
+        out = []
+        for val, col in zip(line, self.columns):
+            val = format(val, &#39;&gt;&#39; + str(len(col)))
+            out.append(&#34; &#34; + val + &#34; &#34;)
+        self._writeln(out)</code></pre>
+</details>
+<h3>Methods</h3>
+<dl>
+<dt id="julius.utils.MarkdownTable.header"><code class="name flex">
+<span>def <span class="ident">header</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+<a href="https://github.com/adefossez/julius/blob/486c0329158ad6c137d18bcddc5461d493005c65/julius/utils.py#L65-L67" class="git-link">Browse git</a>
+</summary>
+<pre><code class="python">def header(self):
+    self._writeln(f&#34; {col} &#34; for col in self.columns)
+    self._writeln(&#34;-&#34; * (len(col) + 2) for col in self.columns)</code></pre>
+</details>
+</dd>
+<dt id="julius.utils.MarkdownTable.line"><code class="name flex">
+<span>def <span class="ident">line</span></span>(<span>self, line)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+<a href="https://github.com/adefossez/julius/blob/486c0329158ad6c137d18bcddc5461d493005c65/julius/utils.py#L69-L74" class="git-link">Browse git</a>
+</summary>
+<pre><code class="python">def line(self, line):
+    out = []
+    for val, col in zip(line, self.columns):
+        val = format(val, &#39;&gt;&#39; + str(len(col)))
+        out.append(&#34; &#34; + val + &#34; &#34;)
+    self._writeln(out)</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+</dl>
+</section>
+</article>
+<nav id="sidebar">
+<h1>Index</h1>
+<div class="toc">
+<ul></ul>
+</div>
+<ul id="index">
+<li><h3>Super-module</h3>
+<ul>
+<li><code><a title="julius" href="index.html">julius</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-functions">Functions</a></h3>
+<ul class="">
+<li><code><a title="julius.utils.simple_repr" href="#julius.utils.simple_repr">simple_repr</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-classes">Classes</a></h3>
+<ul>
+<li>
+<h4><code><a title="julius.utils.Chrono" href="#julius.utils.Chrono">Chrono</a></code></h4>
+</li>
+<li>
+<h4><code><a title="julius.utils.MarkdownTable" href="#julius.utils.MarkdownTable">MarkdownTable</a></code></h4>
+<ul class="">
+<li><code><a title="julius.utils.MarkdownTable.header" href="#julius.utils.MarkdownTable.header">header</a></code></li>
+<li><code><a title="julius.utils.MarkdownTable.line" href="#julius.utils.MarkdownTable.line">line</a></code></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</nav>
+</main>
+<footer id="footer">
+<p>Generated by <a href="https://pdoc3.github.io/pdoc" title="pdoc: Python API documentation generator"><cite>pdoc</cite> 0.10.0</a>.</p>
+</footer>
+</body>
+</html>
