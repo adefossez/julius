@@ -117,6 +117,7 @@ def unfold(input, kernel_size: int, stride: int):
     strides: tp.List[int] = []
     for dim in range(padded.dim()):
         strides.append(padded.stride(dim))
-    assert strides.pop(-1) == 1, 'data should be contiguous'
+    last_stride = strides.pop(-1)
+    assert last_stride == 1, 'data should be contiguous'
     strides = strides + [stride, 1]
     return padded.as_strided(shape + [n_frames, kernel_size], strides)
