@@ -1,0 +1,32 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "julius"
+version = "0.2.8a1"
+description = "Nice DSP sweets: resampling, FFT Convolutions. All with PyTorch, differentiable and with CUDA support."
+readme = "README.md"
+requires-python = ">=3.6.0"
+license = { text = "MIT License" }
+authors = [
+    { name = "Alexandre Défossez", email = "alexandre.defossez@gmail.com" },
+]
+dependencies = ["torch>=1.7.0"]
+classifiers = [
+    "License :: OSI Approved :: MIT License",
+    "Topic :: Multimedia :: Sound/Audio",
+    "Topic :: Scientific/Engineering",
+]
+
+[project.urls]
+Homepage = "https://github.com/adefossez/julius"
+
+[project.optional-dependencies]
+dev = ["coverage", "flake8", "mypy", "onnx", "onnxruntime", "resampy==0.2.2", "pdoc3"]
+
+[tool.setuptools]
+packages = ["julius"]
+
+[tool.setuptools.package-data]
+julius = ["py.typed"]

@@ -14,7 +14,7 @@ docs:
 	cp logo.png docs/
 
 dist:
-	python3 setup.py sdist
+	uv build
 
 clean:
 	rm -r docs dist build *.egg-info
