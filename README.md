@@ -27,6 +27,7 @@ width="500px"></p>
 
 ## News
 
+- 19/09/2022: __`julius` 0.2.8 released:__: Switching to pyproject.toml, now requires python >= 3.9. Bug fix with -O flag (thanks @aiknownc)
 - 19/09/2022: __`julius` 0.2.7 released:__: fixed ONNX compat (thanks @iver56). I know I missed the 0.2.6 one...
 - 28/07/2021: __`julius` 0.2.5 released:__: support for setting a custom output length when resampling.
 - 22/06/2021: __`julius` 0.2.4 released:__: adding highpass and band passfilters.
