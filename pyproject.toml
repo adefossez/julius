@@ -1,6 +1,6 @@
 [build-system]
-requires = ["setuptools>=61.0"]
-build-backend = "setuptools.build_meta"
+requires = ["hatchling"]
+build-backend = "hatchling.build"
 
 [project]
 name = "julius"
@@ -25,8 +25,17 @@ Homepage = "https://github.com/adefossez/julius"
 [project.optional-dependencies]
 dev = ["coverage", "flake8", "mypy", "onnx", "onnxruntime", "resampy==0.2.2", "pdoc3"]
 
-[tool.setuptools]
+[tool.hatch.build.targets.wheel]
 packages = ["julius"]
 
-[tool.setuptools.package-data]
-julius = ["py.typed"]
+[tool.hatch.build.targets.sdist]
+include = [
+    "julius",
+    "tests",
+    "bench",
+    "README.md",
+    "LICENSE",
+]
+# docs/ holds generated HTML and is gitignored; force it into the sdist
+# to match the previous MANIFEST.in behavior.
+artifacts = ["docs/*/*.html"]
