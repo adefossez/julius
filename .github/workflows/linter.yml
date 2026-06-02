@@ -9,16 +9,14 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
-    - uses: actions/setup-python@v2
+    - uses: actions/checkout@v4
+    - uses: astral-sh/setup-uv@v6
       with:
-        python-version: 3.8
+        python-version: "3.9"
+        enable-cache: true
 
     - name: Install dependencies
-      run: |
-        python -m pip install --upgrade pip
-        pip install '.[dev]'
+      run: uv sync --extra dev
 
-    - name: Run tests
-      run: |
-        make linter
+    - name: Run linter
+      run: uv run make linter
