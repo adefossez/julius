@@ -19,7 +19,7 @@ jobs:
       run: uv sync --extra dev
 
     - name: Run tests
-      run: uv run make tests
+      run: uv run --extra dev make tests
 
     - name: Run tests, minimum supported torch
       run: uv run --resolution lowest-direct --extra dev make tests

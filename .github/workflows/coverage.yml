@@ -20,4 +20,4 @@ jobs:
 
     - name: Test coverage
       run: |
-         test "$(uv run make tests | sed -nEe 's/TOTAL.*[[:space:]]([[:digit:]]+)%/\1/p')" -ge 90
+         test "$(uv run --extra dev make tests | sed -nEe 's/TOTAL.*[[:space:]]([[:digit:]]+)%/\1/p')" -ge 90

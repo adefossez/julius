@@ -26,7 +26,7 @@ jobs:
 
     - name: Make docs
       run: |
-        uv run make docs
+        uv run --extra dev make docs
         git add -f docs
         git commit -m docs
 

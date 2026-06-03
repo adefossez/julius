@@ -19,4 +19,4 @@ jobs:
       run: uv sync --extra dev
 
     - name: Run linter
-      run: uv run make linter
+      run: uv run --extra dev make linter
