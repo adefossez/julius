@@ -527,13 +527,13 @@ dev = [
 
 [package.metadata]
 requires-dist = [
-    { name = "coverage", marker = "extra == 'dev'" },
-    { name = "flake8", marker = "extra == 'dev'" },
-    { name = "mypy", marker = "extra == 'dev'" },
-    { name = "onnx", marker = "extra == 'dev'" },
-    { name = "onnxruntime", marker = "python_full_version >= '3.10' and extra == 'dev'" },
-    { name = "onnxruntime", marker = "python_full_version < '3.10' and extra == 'dev'", specifier = "<1.20" },
-    { name = "pdoc3", marker = "extra == 'dev'" },
+    { name = "coverage", marker = "extra == 'dev'", specifier = ">=7.0" },
+    { name = "flake8", marker = "extra == 'dev'", specifier = ">=5.0" },
+    { name = "mypy", marker = "extra == 'dev'", specifier = ">=1.0" },
+    { name = "onnx", marker = "extra == 'dev'", specifier = ">=1.13" },
+    { name = "onnxruntime", marker = "python_full_version >= '3.10' and extra == 'dev'", specifier = ">=1.16" },
+    { name = "onnxruntime", marker = "python_full_version < '3.10' and extra == 'dev'", specifier = ">=1.16,<1.20" },
+    { name = "pdoc3", marker = "extra == 'dev'", specifier = ">=0.10" },
     { name = "resampy", marker = "extra == 'dev'", specifier = "==0.4.3" },
     { name = "torch", specifier = ">=1.13.0" },
 ]

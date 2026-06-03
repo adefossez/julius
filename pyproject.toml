@@ -24,15 +24,17 @@ Homepage = "https://github.com/adefossez/julius"
 
 [project.optional-dependencies]
 dev = [
-    "coverage",
-    "flake8",
-    "mypy",
-    "onnx",
-    "pdoc3",
+    # Lower bounds matter: the tests CI runs `--resolution lowest-direct`, which
+    # otherwise pulls ancient, unbuildable releases (e.g. coverage 3.0).
+    "coverage>=7.0",
+    "flake8>=5.0",
+    "mypy>=1.0",
+    "onnx>=1.13",
+    "pdoc3>=0.10",
     "resampy==0.4.3",
     # onnxruntime dropped cp38/cp39 wheels at 1.20; cap it for old Pythons.
-    "onnxruntime; python_version >= '3.10'",
-    "onnxruntime<1.20; python_version < '3.10'",
+    "onnxruntime>=1.16; python_version >= '3.10'",
+    "onnxruntime>=1.16,<1.20; python_version < '3.10'",
 ]
 
 [tool.hatch.build.targets.wheel]
