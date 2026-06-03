@@ -22,4 +22,4 @@ jobs:
       run: uv run make tests
 
     - name: Run tests, minimum supported torch
-      run: uv run --resolution lowest-direct make tests
+      run: uv run --resolution lowest-direct --extra dev make tests
