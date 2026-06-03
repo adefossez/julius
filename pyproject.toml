@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "julius"
-version = "0.2.8a2"
+version = "0.2.8"
 description = "Nice DSP sweets: resampling, FFT Convolutions. All with PyTorch, differentiable and with CUDA support."
 readme = "README.md"
 requires-python = ">=3.9.0"
