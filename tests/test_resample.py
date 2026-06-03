@@ -218,7 +218,9 @@ class TestResampleFrac(_BaseTest):
                     "output": {0: "num_channels", 1: "num_samples"},
                 },
             )
-            onnx_model = onnxruntime.InferenceSession(tmp_onnx_file_path)
+            onnx_model = onnxruntime.InferenceSession(
+                tmp_onnx_file_path, providers=["CPUExecutionProvider"]
+            )
             onnxruntime_output = onnx_model.run(
                 ["output"], {"input": example_input2.numpy()}
             )[0]
