@@ -32,6 +32,11 @@ dev = [
     "onnx>=1.13",
     "pdoc3>=0.10",
     "resampy==0.4.3",
+    # Pin numpy alongside torch: `--resolution lowest-direct` lowers torch to 1.13,
+    # which has the numpy-1 ABI and breaks against numpy 2. Listing numpy as a direct
+    # dep makes lowest-direct lower it too (1.21), while the default resolution still
+    # gets numpy 2 with the latest torch.
+    "numpy>=1.21",
     # onnxruntime dropped cp38/cp39 wheels at 1.20; cap it for old Pythons.
     "onnxruntime>=1.16; python_version >= '3.10'",
     "onnxruntime>=1.16,<1.20; python_version < '3.10'",
