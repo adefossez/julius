@@ -1,9 +1,9 @@
 # File under the MIT license, see https://github.com/adefossez/julius/LICENSE for details.
 # Author: adefossez, 2020
+import importlib.util
 import os
 import tempfile
 import uuid
-from pathlib import Path
 
 import math
 import random
@@ -14,12 +14,9 @@ import torch as th
 
 from julius import resample, ResampleFrac
 
-is_onnxruntime_installed = True
-try:
-    import onnxruntime
-except ImportError:
+is_onnxruntime_installed = importlib.util.find_spec("onnxruntime") is not None
+if not is_onnxruntime_installed:
     print("Warning: onnxruntime is not installed. Some tests may be skipped")
-    is_onnxruntime_installed = False
 
 
 def pure_tone(freq, sr=128, dur=4):
@@ -197,6 +194,8 @@ class TestResampleFrac(_BaseTest):
 
     @unittest.skipUnless(is_onnxruntime_installed, "onnxruntime is not installed")
     def test_onnx_compatibility(self):
+        import onnxruntime
+
         tmp_onnx_file_path = os.path.join(
             tempfile.gettempdir(), str(uuid.uuid4()) + ".onnx"
         )
@@ -207,7 +206,7 @@ class TestResampleFrac(_BaseTest):
 
             th.onnx.export(
                 resampler,
-                example_input1,
+                (example_input1,),
                 tmp_onnx_file_path,
                 export_params=True,
                 opset_version=11,
