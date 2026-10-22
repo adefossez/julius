@@ -39,7 +39,7 @@ width="500px"></p>
 
 ## Installation
 
-`julius` requires python 3.6. To install:
+`julius` requires Python 3.9 or later. To install:
 ```bash
 pip3 install -U julius
 ```
